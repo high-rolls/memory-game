@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import Card from "./Card";
+import { useTimeout } from "../hooks/use-timeout";
 import type { CardData } from "../types";
 
 function shuffle<T>(items: T[]): T[] {
@@ -32,51 +33,47 @@ const initialCards = createRandomCards();
 
 const Board = () => {
   const [cards, setCards] = useState(initialCards);
+  const [state, setState] = useState("initial");
+
   const flippedCount = cards.filter((c) => c.flipped).length;
   const matchCount = cards.filter((c) => c.matched).length / 2;
   const hasWon = matchCount === cards.length / 2;
 
-  useEffect(() => {
-    if (flippedCount === 2) {
-      const checkMatches = () => {
-        const flippedCards = cards.filter((c) => c.flipped);
-        if (flippedCards[0].value === flippedCards[1].value) {
-          // Cards match, unflip and mark them as matched
-          const newCards = cards.map((c) => {
-            if (c.flipped) {
-              return {
-                ...c,
-                flipped: false,
-                matched: true,
-              } as CardData;
-            }
-            return c;
-          });
-          setCards(newCards);
-        } else {
-          // No match, just unflip
-          const newCards = cards.map((c) => {
-            if (c.flipped) {
-              return {
-                ...c,
-                flipped: false,
-              } as CardData;
-            }
-            return c;
-          });
-          setCards(newCards);
+  const resolveMatches = () => {
+    const flippedCards = cards.filter((c) => c.flipped);
+    if (flippedCards[0].value === flippedCards[1].value) {
+      // Cards match, unflip and mark them as matched
+      const newCards = cards.map((c) => {
+        if (c.flipped) {
+          return {
+            ...c,
+            flipped: false,
+            matched: true,
+          } as CardData;
         }
-      };
-
-      const timerId = setTimeout(() => {
-        checkMatches();
-      }, 1000);
-
-      return () => clearTimeout(timerId);
+        return c;
+      });
+      setCards(newCards);
+    } else {
+      // No match, just unflip
+      const newCards = cards.map((c) => {
+        if (c.flipped) {
+          return {
+            ...c,
+            flipped: false,
+          } as CardData;
+        }
+        return c;
+      });
+      setCards(newCards);
     }
-  }, [cards, flippedCount]);
+  };
 
   const handleCardClicked = (cardClicked: CardData) => {
+    if (state !== "playing") {
+      return;
+    }
+
     if (cardClicked.flipped || cardClicked.matched) return;
 
     if (flippedCount === 2) {
@@ -95,9 +92,30 @@ const Board = () => {
     setCards(newCards);
   };
 
-  const resetBoard = () => {
-    setCards(createRandomCards());
+  const startGame = () => {
+    const flippedCards = createRandomCards().map(c => {
+      return {
+        ...c,
+        flipped: true
+      } as CardData;
+    });
+    setState("displaying-cards");
+    setCards(flippedCards);
+    useTimeout(() => {
+      const unflippedCards = flippedCards.map(c => {
+        return {
+          ...c,
+          flipped: false,
+        } as CardData;
+      });
+      setState("playing");
+      setCards(unflippedCards);
+    }, 3000);
   };
+
+  if (state === 'playing' && flippedCount === 2) {
+    useTimeout(resolveMatches, 1000);
+  }
 
   return (
     <div
@@ -118,19 +136,21 @@ const Board = () => {
             />
           ))}
         </div>
-        {hasWon && (
-          <div className="mt-3 flex flex-col items-center">
+        <div className="mt-3 flex flex-col items-center">
+          {hasWon && (
             <h1 className="text-3xl sm:text-5xl font-bold text-lime-100">
               You've won!
             </h1>
+          )}
+          {(state === "initial" || hasWon) && (
             <button
               className="mt-3 p-3 flex justify-start items-center gap-2 text-lg rounded-md font-semibold text-black bg-lime-500 hover:bg-lime-600"
-              onClick={() => resetBoard()}
+              onClick={() => startGame()}
             >
               <RefreshCw color="black" size={20} /> New Game
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
