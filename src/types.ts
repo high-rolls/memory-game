@@ -1,6 +1,6 @@
 export type CardData = {
   id: number;
   value: number;
-  flipped: boolean;
-  matched: boolean;
+  isFaceUp: boolean;
+  isMatched: boolean;
 };
