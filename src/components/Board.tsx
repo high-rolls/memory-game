@@ -43,8 +43,9 @@ const Board = () => {
     confetti.addConfetti({
       emojis: emojis,
       confettiNumber: 16,
-      emojiSize: 200,
+      emojiSize: 100,
     });
+    navigator.vibrate(100);
   }
 
   const markMatched = (ids: number[]) => {
