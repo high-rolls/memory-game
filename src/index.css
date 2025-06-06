@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+@utility perspective {
+  perspective: 1000px;
+}
+ 
+@utility preserve-3d {
+  transform-style: preserve-3d;
+}
+
+@utility backface-hidden {
+  backface-visibility: hidden;
+}
+
+@utility rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+@layer components {
+  .card-face {
+    @apply absolute w-full h-full flex items-center justify-center text-4xl sm:text-6xl 2xl:text-6xl rounded-md;
+  }
+}

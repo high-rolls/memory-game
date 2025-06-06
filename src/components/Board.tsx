@@ -2,6 +2,7 @@ import { useState } from "react";
 import { RefreshCw } from "lucide-react";
 import Card from "./Card";
 import type { CardData } from "../types";
+import JSConfetti from 'js-confetti';
 
 function shuffleArray<T>(arr: T[]): T[] {
   const newArr = [...arr];
@@ -25,8 +26,9 @@ const createCardArray = (numCards: number, isFaceUp: boolean): CardData[] => {
     isMatched: false,
   }));
 };
-
+const emojis = ["🐁", "🦉", "🦥", "🐎", "🦖", "🐓", "🦐", "🦋"];
 const initialCards = createCardArray(16, false);
+const confetti = new JSConfetti();
 
 const Board = () => {
   const [cards, setCards] = useState<CardData[]>(initialCards);
@@ -38,6 +40,11 @@ const Board = () => {
 
   if (state === "playing" && matchCount === 8) {
     setState("win");
+    confetti.addConfetti({
+      emojis: emojis,
+      confettiNumber: 16,
+      emojiSize: 200,
+    });
   }
 
   const markMatched = (ids: number[]) => {
@@ -113,8 +120,9 @@ const Board = () => {
         <div className="mt-2 rounded-md grid grid-cols-4 gap-3">
           {cards.map((card) => (
             <Card
-              key={card.id}
               {...card}
+              key={card.id}
+              emoji={emojis[card.value]}
               onClick={() => handleCardClicked(card)}
             />
           ))}
