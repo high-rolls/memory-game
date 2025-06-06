@@ -113,7 +113,7 @@ const Board = () => {
   return (
     <div
       className={`${
-        state === "win" ? "bg-emerald-900" : "bg-gray-800"
+        state === "win" ? "bg-emerald-900" : "bg-slate-800"
       } flex justify-center items-center min-h-screen`}
     >
       <div>
@@ -130,8 +130,10 @@ const Board = () => {
 
         <div className="mt-3 flex flex-col items-center">
           {state === "playing" && (
-            <h1 className="text-3xl sm:text-5xl text-gray-100">
-              {matchCount === 0 ? "No" : matchCount} match
+            <h1 className="text-3xl sm:text-5xl text-gray-100 font-light">
+              {matchCount === 0 ? "No" : (
+                <span className="font-bold">{matchCount}</span>
+              )} match
               {matchCount !== 1 && "es"}
             </h1>
           )}
