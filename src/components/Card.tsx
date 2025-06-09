@@ -1,13 +1,19 @@
+import { useContext } from "react";
 import type { MouseEventHandler } from "react";
 import { motion } from "framer-motion";
-import type { CardData } from "../types";
+import { IconThemeContext } from "@/context/icon-theme-context";
+import type { CardData } from "@/lib/types";
+import { getEmojisForTheme } from "@/lib/themes";
 
 type CardProps = CardData & {
-  emoji: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
 };
 
-const Card = ({ isFaceUp, isMatched, emoji, onClick }: CardProps) => {
+const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
+  const iconTheme = useContext(IconThemeContext);
+  const themeEmojis = getEmojisForTheme(iconTheme);
+  const emoji = themeEmojis[value];
+
   return (
     <div className="perspective w-[64px] h-[64px] sm:w-[96px] sm:h-[96px] 2xl:w-[128px] 2xl:h-[128px]">
       <button
