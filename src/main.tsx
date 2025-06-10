@@ -4,18 +4,16 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import "./index.css";
 import MainMenu from "@/routes/main-menu";
 import Play from "@/routes/play";
-import { IconThemeContext } from "./context/icon-theme-context";
+import MemoryGameLayout from "./routes/memory-game-layout";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <IconThemeContext value="animals">
-          <Route path="memory-game">
-            <Route index element={<MainMenu />} />
-            <Route path="play" element={<Play />} />
-          </Route>
-        </IconThemeContext>
+        <Route path="memory-game" element={<MemoryGameLayout />}>
+          <Route index element={<MainMenu />} />
+          <Route path="play" element={<Play />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   </StrictMode>

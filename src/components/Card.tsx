@@ -10,7 +10,7 @@ type CardProps = CardData & {
 };
 
 const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
-  const iconTheme = useContext(IconThemeContext);
+  const { iconTheme } = useContext(IconThemeContext);
   const themeEmojis = getEmojisForTheme(iconTheme);
   const emoji = themeEmojis[value];
 
