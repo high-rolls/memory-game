@@ -24,7 +24,7 @@ const Play = () => {
 
   const matchCount = cards.filter((card) => card.isMatched).length / 2;
 
-  if (state === "playing" && matchCount === 8) {
+  if (state === "playing" && matchCount === cardCount / 2) {
     setState("win");
     confetti.addConfetti({
       confettiNumber: 16,
@@ -99,7 +99,7 @@ const Play = () => {
 
   return (
     <div
-      className={`flex flex-col justify-center items-center min-h-screen ${
+      className={`flex flex-col justify-center items-center min-h-screen p-3 ${
         state === "win" ? "bg-emerald-900" : "bg-slate-800"
       }`}
     >

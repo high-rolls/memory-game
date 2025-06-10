@@ -13,7 +13,7 @@ const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
   const emoji = getEmojiForTheme(iconTheme, value);
 
   return (
-    <div className="perspective w-[64px] h-[64px] sm:w-[96px] sm:h-[96px] 2xl:w-[128px] 2xl:h-[128px]">
+    <div className="perspective aspect-square w-full h-full">
       <button
         onClick={onClick}
         className="relative w-full h-full"
