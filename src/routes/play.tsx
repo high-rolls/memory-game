@@ -1,42 +1,25 @@
-import { useState } from "react";
-import JSConfetti from "js-confetti";
-import { RefreshCw } from "lucide-react";
-import useSound from "use-sound";
 import matchSfx from "@/assets/audio/match.ogg";
-import type { CardData } from "@/lib/types";
 import Board from "@/components/board";
+import StatusBar from "@/components/status-bar";
+import { useGameSettings } from "@/context/game-settings-context";
+import { createCardArray } from "@/lib/game";
+import type { CardData } from "@/lib/types";
+import { shuffleArray } from "@/lib/utils";
+import JSConfetti from "js-confetti";
+import { useState } from "react";
+import useSound from "use-sound";
 
-function shuffleArray<T>(arr: T[]): T[] {
-  const newArr = [...arr];
-  for (let i = newArr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
-  }
-  return newArr;
-}
+type GameState = "initial" | "displaying-cards" | "playing" | "win";
 
-const createCardArray = (numCards: number, isFaceUp: boolean): CardData[] => {
-  if (numCards < 2 || numCards % 2 !== 0) {
-    throw new Error("Card amount must be a positive number divisible by 2.");
-  }
 
-  const values = Array.from({ length: numCards / 2 }, (_, i) => i);
-  return [...values, ...values].map((value, index) => ({
-    id: index,
-    value,
-    isFaceUp,
-    isMatched: false,
-  }));
-};
-
-const initialCards = createCardArray(16, false);
 const confetti = new JSConfetti();
 
 const Play = () => {
-  const [cards, setCards] = useState<CardData[]>(initialCards);
-  const [state, setState] = useState<
-    "initial" | "displaying-cards" | "playing" | "win"
-  >("initial");
+  const { cardCount } = useGameSettings();
+  const [cards, setCards] = useState<CardData[]>(
+    createCardArray(cardCount, false)
+  );
+  const [state, setState] = useState<GameState>("initial");
   const [playMatchSound] = useSound(matchSfx);
 
   const matchCount = cards.filter((card) => card.isMatched).length / 2;
@@ -116,9 +99,9 @@ const Play = () => {
 
   return (
     <div
-      className={`${
+      className={`flex flex-col justify-center items-center min-h-screen ${
         state === "win" ? "bg-emerald-900" : "bg-slate-800"
-      } flex justify-center items-center min-h-screen`}
+      }`}
     >
       <Board cards={cards} onCardClicked={handleCardClicked} />
       <StatusBar
@@ -129,51 +112,5 @@ const Play = () => {
     </div>
   );
 };
-
-type StatusBarProps = {
-  gameState: "initial" | "displaying-cards" | "playing" | "win";
-  matchCount: number;
-  onNewGameButtonClick: () => void;
-};
-
-function StatusBar({
-  gameState,
-  matchCount,
-  onNewGameButtonClick,
-}: StatusBarProps) {
-  return (
-    <div className="mt-3 flex flex-col items-center">
-      {gameState === "playing" && (
-        <h1 className="text-3xl sm:text-5xl text-gray-100 font-light">
-          {matchCount === 0 ? (
-            "No"
-          ) : (
-            <span className="font-bold">{matchCount}</span>
-          )}{" "}
-          match
-          {matchCount !== 1 && "es"}
-        </h1>
-      )}
-      {gameState === "win" && (
-        <h1 className="mb-3 text-3xl sm:text-5xl font-bold text-lime-100">
-          You've won!
-        </h1>
-      )}
-      {gameState === "displaying-cards" && (
-        <h1 className="text-3xl sm:text-5xl font-bold text-gray-100">
-          Get Ready...
-        </h1>
-      )}
-      {(gameState === "initial" || gameState === "win") && (
-        <button
-          className="p-3 flex justify-start items-center gap-2 text-lg rounded-md font-semibold text-black bg-lime-500 hover:bg-lime-600"
-          onClick={onNewGameButtonClick}
-        >
-          <RefreshCw color="black" size={20} /> New Game
-        </button>
-      )}
-    </div>
-  );
-}
 
 export default Play;

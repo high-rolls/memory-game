@@ -1,11 +1,11 @@
 // src/routes/MemoryGameLayout.tsx
 import { Outlet } from "react-router";
-import { IconThemeProvider } from "@/context/icon-theme-context";
+import { GameSettingsProvider } from "@/context/game-settings-context";
 
 export default function MemoryGameLayout() {
   return (
-    <IconThemeProvider>
+    <GameSettingsProvider>
       <Outlet />
-    </IconThemeProvider>
+    </GameSettingsProvider>
   );
 }

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import type { IconTheme } from "@/lib/themes";
+import type { IconTheme } from "@/lib/types";
 
 export const IconThemeContext = createContext<{
   iconTheme: IconTheme;

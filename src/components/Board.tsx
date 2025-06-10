@@ -3,17 +3,17 @@ import Card from "@/components/card";
 
 export interface IBoardProps {
   cards: CardData[];
-  onCardClicked: (card: CardData) => void;
+  onCardClicked?: (card: CardData) => void;
 }
 
-const Board = ({ cards, onCardClicked }: IBoardProps) => {
+function Board ({ cards, onCardClicked }: IBoardProps) {
   return (
-    <div className="mt-2 rounded-md grid grid-cols-4 gap-3">
+    <div className="rounded-md grid grid-cols-4 gap-3">
       {cards.map((card) => (
         <Card
           {...card}
           key={card.id}
-          onClick={() => onCardClicked(card)}
+          onClick={onCardClicked ? () => onCardClicked(card) : undefined}
         />
       ))}
     </div>
