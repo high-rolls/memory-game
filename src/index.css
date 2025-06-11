@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+@font-face {
+  font-family: "Noto Color Emoji";
+  src: url("./assets/fonts/NotoColorEmoji-Regular.ttf");
+}
+
 @utility perspective {
   perspective: 1000px;
 }
@@ -20,5 +25,6 @@
 @layer components {
   .card-face {
     @apply absolute w-full h-full flex items-center justify-center rounded-md shadow-md border-2 border-amber-700;
+    font-family: "Noto Color Emoji";
   }
 }
