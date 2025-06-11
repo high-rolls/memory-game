@@ -3,6 +3,7 @@ import Board from "@/components/board";
 import StatusBar from "@/components/status-bar";
 import { useGameSettings } from "@/context/game-settings-context";
 import { createCardArray } from "@/lib/game";
+import { getRandomEmojisInTheme } from "@/lib/themes";
 import type { CardData } from "@/lib/types";
 import { shuffleArray } from "@/lib/utils";
 import JSConfetti from "js-confetti";
@@ -11,11 +12,10 @@ import useSound from "use-sound";
 
 type GameState = "initial" | "displaying-cards" | "playing" | "win";
 
-
 const confetti = new JSConfetti();
 
 const Play = () => {
-  const { cardCount } = useGameSettings();
+  const { cardCount, iconTheme, icons, setIcons } = useGameSettings();
   const [cards, setCards] = useState<CardData[]>(
     createCardArray(cardCount, false)
   );
@@ -83,6 +83,7 @@ const Play = () => {
   };
 
   const startGame = () => {
+    setIcons(getRandomEmojisInTheme(iconTheme, icons.length));
     const shuffled = shuffleArray(cards).map((card) => ({
       ...card,
       isFaceUp: true,

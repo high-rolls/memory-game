@@ -8,3 +8,8 @@ export type CardData = {
 };
 
 export type IconTheme = "animals" | "fruits";
+
+export type WindowSize = {
+    width: number;
+    height: number;
+}

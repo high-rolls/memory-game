@@ -1,7 +1,9 @@
 import Board from "@/components/board";
 import { useGameSettings } from "@/context/game-settings-context";
 import { createCardArray } from "@/lib/game";
+import { getEmojisForTheme } from "@/lib/themes";
 import type { CardCount, IconTheme } from "@/lib/types";
+import { useMemo } from "react";
 import { useNavigate } from "react-router";
 
 const CARD_COUNT_MIN = 8;
@@ -16,10 +18,18 @@ const CARD_COUNT_VALUES = new Array(
 
 function MainMenu() {
   const navigate = useNavigate();
-  const { cardCount, setCardCount, iconTheme, setIconTheme } =
+  const { cardCount, setCardCount, iconTheme, setIconTheme, setIcons } =
     useGameSettings();
 
-  const cards = createCardArray(cardCount, true);
+  // Create a separate card collection for each board size
+  const cards = useMemo(() => createCardArray(cardCount, true), [cardCount]);
+
+  // Display the card icons always in the same order in the menu,
+  // and memorize them based on the icon theme and card count.
+  useMemo(
+    () => setIcons(getEmojisForTheme(iconTheme, cardCount / 2)),
+    [iconTheme, cardCount]
+  );
 
   const handleCardCountChange = (value: string) => {
     const intValue = parseInt(value) as CardCount;

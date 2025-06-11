@@ -7,7 +7,7 @@ export function createCardArray (numCards: number, isFaceUp: boolean): CardData[
 
   const values = Array.from({ length: numCards / 2 }, (_, i) => i);
   return [...values, ...values].map((value, index) => ({
-    id: index,
+    id: length * 100 + index,
     value,
     isFaceUp,
     isMatched: false,

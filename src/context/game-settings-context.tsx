@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import type { CardCount, IconTheme } from "@/lib/types";
-import { getRandomEmojisInTheme } from "@/lib/themes";
+import { getEmojisForTheme, getRandomEmojisInTheme } from "@/lib/themes";
 
 export const GameSettingsContext = createContext<{
   iconTheme: IconTheme;
@@ -30,7 +30,7 @@ export function GameSettingsProvider({
   const [iconTheme, setIconTheme] = useState<IconTheme>("animals");
   const [cardCount, setCardCount] = useState<CardCount>(16);
   const [icons, setIcons] = useState<string[]>(
-    getRandomEmojisInTheme(iconTheme, cardCount / 2)
+    getEmojisForTheme(iconTheme, cardCount / 2)
   );
 
   return (

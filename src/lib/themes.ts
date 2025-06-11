@@ -40,19 +40,13 @@ export const themeEmojis = {
   ],
 };
 
-export function getEmojisForTheme(theme: IconTheme) {
-  return themeEmojis[theme as keyof typeof themeEmojis] || themeEmojis.animals;
-};
-
-export function getEmojiForTheme(theme: IconTheme, value: number) {
-  if (value < 0 || value > 16) {
-    throw new Error("Invalid card value.");
-  }
-  return getEmojisForTheme(theme)[value];
+export function getEmojisForTheme(theme: IconTheme, length: number) {
+  const emojis = themeEmojis[theme as keyof typeof themeEmojis] || themeEmojis.animals;
+  return emojis.slice(0, length);
 };
 
 export function getRandomEmojisInTheme(theme: IconTheme, length: number) {
-  const allEmojis = getEmojisForTheme(theme);
+  const allEmojis = getEmojisForTheme(theme, length);
   if (length > allEmojis.length) {
     throw new Error("Provided length is greater than the number of emoji in theme.");
   }
