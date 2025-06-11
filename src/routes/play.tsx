@@ -104,7 +104,7 @@ const Play = () => {
         state === "win" ? "bg-emerald-900" : "bg-slate-800"
       }`}
     >
-      <Board cards={cards} onCardClicked={handleCardClicked} />
+      <Board cards={cards} onCardClicked={handleCardClicked} heightRatio={0.8} />
       <StatusBar
         gameState={state}
         matchCount={matchCount}

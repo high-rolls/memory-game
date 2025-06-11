@@ -7,9 +7,10 @@ import { useWindowSize } from "@/lib/hooks";
 export interface IBoardProps {
   cards: CardData[];
   onCardClicked?: (card: CardData) => void;
+  heightRatio: number;
 }
 
-function Board({ cards, onCardClicked }: IBoardProps) {
+function Board({ cards, onCardClicked, heightRatio }: IBoardProps) {
   const windowSize = useWindowSize();
 
   const [smallSide, largeSide] = useMemo(
@@ -27,12 +28,12 @@ function Board({ cards, onCardClicked }: IBoardProps) {
 
   return (
     <div
-      className="rounded-md grid gap-2 md:gap-3 h-full"
+      className="rounded-md grid gap-2 h-full"
       style={{
         gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
         gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
         aspectRatio: `${columns} / ${rows}`,
-        width: `min(100%, ${(70 * columns) / rows}vh)`,
+        width: `min(100%, ${(heightRatio * 100 * columns) / rows}vh)`,
       }}
     >
       {cards.map((card) => (

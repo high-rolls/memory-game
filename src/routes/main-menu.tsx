@@ -1,9 +1,9 @@
 import Board from "@/components/board";
 import { useGameSettings } from "@/context/game-settings-context";
 import { createCardArray } from "@/lib/game";
-import { getEmojisForTheme } from "@/lib/themes";
+import { getEmojisForTheme, getRandomEmojisInTheme } from "@/lib/themes";
 import type { CardCount, IconTheme } from "@/lib/types";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router";
 
 const CARD_COUNT_MIN = 8;
@@ -26,8 +26,8 @@ function MainMenu() {
 
   // Display the card icons always in the same order in the menu,
   // and memorize them based on the icon theme and card count.
-  useMemo(
-    () => setIcons(getEmojisForTheme(iconTheme, cardCount / 2)),
+  useEffect(
+    () => setIcons(getRandomEmojisInTheme(iconTheme, cardCount / 2)),
     [iconTheme, cardCount]
   );
 
@@ -42,7 +42,10 @@ function MainMenu() {
 
   return (
     <div className="hero bg-base-200 min-h-screen">
-      <div className="hero-content w-full flex-col lg:flex-row">
+      <div className="hero-content flex-col lg:flex-row justify-center">
+        <div className="w-xs flex justify-center lg:justify-start">
+          <Board cards={cards} heightRatio={0.5} />
+        </div>
         <div className="flex flex-col gap-3">
           <h1 className="text-3xl font-bold">Memoji</h1>
           <div className="w-full max-w-xs">
@@ -81,8 +84,13 @@ function MainMenu() {
                 className="select"
                 onChange={(event) => handleIconThemeChange(event.target.value)}
               >
+                <option value="activities">⚽ Activities</option>
                 <option value="animals">🐸 Animals</option>
-                <option value="fruits">🍎 Fruits</option>
+                <option value="drinks">☕ Drinks</option>
+                <option value="flags">🚩 Flags</option>
+                <option value="foods">🍎 Food</option>
+                <option value="objects">💍 Objects</option>
+                <option value="people-and-body">👄 People & Body</option>
               </select>
             </label>
           </div>
@@ -92,9 +100,6 @@ function MainMenu() {
           >
             Play
           </button>
-        </div>
-        <div className="w-full flex justify-center lg:justify-start">
-          <Board cards={cards} />
         </div>
       </div>
     </div>

@@ -7,9 +7,16 @@ export type CardData = {
   isMatched: boolean;
 };
 
-export type IconTheme = "animals" | "fruits";
+export type IconTheme =
+  | "activities"
+  | "animals"
+  | "drinks"
+  | "flags"
+  | "foods"
+  | "objects"
+  | "people-and-body";
 
 export type WindowSize = {
-    width: number;
-    height: number;
-}
+  width: number;
+  height: number;
+};
