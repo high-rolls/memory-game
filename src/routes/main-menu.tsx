@@ -1,7 +1,7 @@
 import Board from "@/components/board";
 import { useGameSettings } from "@/context/game-settings-context";
 import { createCardArray } from "@/lib/game";
-import { getEmojisForTheme, getRandomEmojisInTheme } from "@/lib/themes";
+import { getRandomEmojisInTheme } from "@/lib/themes";
 import type { CardCount, IconTheme } from "@/lib/types";
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router";
