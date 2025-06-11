@@ -1,23 +1,29 @@
-import type { MouseEventHandler } from "react";
-import { motion } from "framer-motion";
-import type { CardData } from "@/lib/types";
-import { getEmojiForTheme } from "@/lib/themes";
 import { useGameSettings } from "@/context/game-settings-context";
+import { useWindowSize } from "@/lib/hooks";
+import type { CardData } from "@/lib/types";
+import { motion } from "framer-motion";
+import { useRef, type MouseEventHandler } from "react";
 
 type CardProps = CardData & {
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
 const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
-  const { iconTheme } = useGameSettings();
-  const emoji = getEmojiForTheme(iconTheme, value);
+  const { icons } = useGameSettings();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const emoji = icons[value];
+  const windowSize = useWindowSize();
+
+  const relativeCardHeight = cardRef.current
+    ? cardRef.current.clientHeight / windowSize.height
+    : 0.1;
 
   return (
-    <div className="perspective aspect-square w-full h-full">
-      <button
-        onClick={onClick}
-        className="relative w-full h-full"
-      >
+    <div
+      className="perspective aspect-square w-full h-full"
+      style={{ fontSize: `${relativeCardHeight * 80}vh` }}
+    >
+      <button onClick={onClick} className="relative w-full h-full">
         <motion.div
           className="relative w-full h-full preserve-3d"
           animate={{ rotateY: isFaceUp ? 0 : 180 }}
@@ -26,8 +32,11 @@ const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
         >
           {/* Front Face */}
           <div
+            ref={cardRef}
             className={`card-face backface-hidden bg-gradient-to-br ${
-              isMatched ? "from-lime-300 to-lime-400" : "from-amber-100 to-amber-200"
+              isMatched
+                ? "from-lime-300 to-lime-400"
+                : "from-amber-100 to-amber-200"
             }`}
           >
             {emoji}

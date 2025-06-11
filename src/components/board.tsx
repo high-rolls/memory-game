@@ -1,7 +1,8 @@
 import type { CardData } from "@/lib/types";
 import Card from "@/components/card";
 import { squarestSides } from "@/lib/math";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useWindowSize } from "@/lib/hooks";
 
 export interface IBoardProps {
   cards: CardData[];
@@ -9,30 +10,12 @@ export interface IBoardProps {
 }
 
 function Board({ cards, onCardClicked }: IBoardProps) {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+  const windowSize = useWindowSize();
 
   const [smallSide, largeSide] = useMemo(
     () => squarestSides(cards.length),
     [cards]
   );
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   const deviceAspectRatio = useMemo(
     () => (windowSize.width > windowSize.height ? "landscape" : "portrait"),
@@ -41,7 +24,6 @@ function Board({ cards, onCardClicked }: IBoardProps) {
 
   const columns = deviceAspectRatio === "portrait" ? smallSide : largeSide;
   const rows = deviceAspectRatio === "portrait" ? largeSide : smallSide;
-  const cellHeightVH = 40 / rows;
 
   return (
     <div
@@ -51,7 +33,6 @@ function Board({ cards, onCardClicked }: IBoardProps) {
         gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
         aspectRatio: `${columns} / ${rows}`,
         width: `min(100%, ${(70 * columns) / rows}vh)`,
-        fontSize: `${cellHeightVH}vh`,
       }}
     >
       {cards.map((card) => (
