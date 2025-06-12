@@ -43,6 +43,10 @@ function MainMenu() {
     setIconTheme(value as IconTheme);
   };
 
+  const searchParams = new URLSearchParams();
+  searchParams.set("card-count", cardCount.toString());
+  searchParams.set("icon-theme", iconTheme);
+
   return (
     <div className="hero bg-base-200 min-h-screen">
       <div className="hero-content flex-col lg:flex-row justify-center">
@@ -99,7 +103,9 @@ function MainMenu() {
           </div>
           <button
             className="w-full btn btn-primary"
-            onClick={() => navigate("/memory-game/play")}
+            onClick={() =>
+              navigate(`/memory-game/play?${searchParams.toString()}`)
+            }
           >
             Play
           </button>
