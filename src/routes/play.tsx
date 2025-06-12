@@ -21,16 +21,16 @@ const Play = () => {
   const [cards, setCards] = useState<CardData[]>(
     createCardArray(cardCount, false)
   );
-  const [state, setState] = useState<GameState>("initial");
+  const [gameState, setGameState] = useState<GameState>("initial");
   const [playMatchSound] = useSound(matchSfx);
   const [playConfettiSound] = useSound(confettiSfx);
   const [playFanfareSound] = useSound(fanfareSfx);
 
   const matchCount = cards.filter((card) => card.isMatched).length / 2;
 
-  if (state === "playing" && matchCount === cardCount / 2) {
+  if (gameState === "playing" && matchCount === cardCount / 2) {
     setTimeout(() => {
-      setState("win");
+      setGameState("win");
       confetti.addConfetti();
       playConfettiSound();
       setTimeout(() => playFanfareSound(), 500);
@@ -74,7 +74,7 @@ const Play = () => {
   };
 
   const handleCardClicked = (clickedCard: CardData) => {
-    if (state !== "playing") return;
+    if (gameState !== "playing") return;
     if (clickedCard.isFaceUp || clickedCard.isMatched) return;
 
     const currentlyFaceUp = cards.filter((c) => c.isFaceUp && !c.isMatched);
@@ -98,18 +98,18 @@ const Play = () => {
       isMatched: false,
     }));
     setCards(shuffled);
-    setState("displaying-cards");
+    setGameState("displaying-cards");
 
     setTimeout(() => {
       setCards((prev) => prev.map((card) => ({ ...card, isFaceUp: false })));
-      setState("playing");
+      setGameState("playing");
     }, 2000);
   };
 
   return (
     <div
       className={`flex flex-col justify-center items-center min-h-screen p-3 ${
-        state === "win" ? "bg-emerald-900" : "bg-slate-800"
+        gameState === "win" ? "bg-emerald-900" : "bg-slate-800"
       }`}
     >
       <Board
@@ -118,7 +118,7 @@ const Play = () => {
         heightRatio={0.8}
       />
       <StatusBar
-        gameState={state}
+        gameState={gameState}
         matchCount={matchCount}
         onNewGameButtonClick={startGame}
       />
