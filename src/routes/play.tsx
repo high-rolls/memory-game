@@ -1,3 +1,5 @@
+import confettiSfx from "@/assets/audio/confetti-cannon.wav";
+import fanfareSfx from "@/assets/audio/kazoo-fanfare.wav";
 import matchSfx from "@/assets/audio/match.ogg";
 import Board from "@/components/board";
 import StatusBar from "@/components/status-bar";
@@ -21,13 +23,19 @@ const Play = () => {
   );
   const [state, setState] = useState<GameState>("initial");
   const [playMatchSound] = useSound(matchSfx);
+  const [playConfettiSound] = useSound(confettiSfx);
+  const [playFanfareSound] = useSound(fanfareSfx);
 
   const matchCount = cards.filter((card) => card.isMatched).length / 2;
 
   if (state === "playing" && matchCount === cardCount / 2) {
-    setState("win");
-    confetti.addConfetti();
-    navigator.vibrate(100);
+    setTimeout(() => {
+      setState("win");
+      confetti.addConfetti();
+      playConfettiSound();
+      setTimeout(() => playFanfareSound(), 500);
+      navigator.vibrate(200);
+    }, 500);
   }
 
   const markMatched = (ids: number[]) => {
@@ -36,7 +44,10 @@ const Play = () => {
         ids.includes(card.id) ? { ...card, isMatched: true } : card
       )
     );
-    setTimeout(() => playMatchSound(), 300);
+    setTimeout(() => {
+      playMatchSound();
+      navigator.vibrate(100);
+    }, 300);
   };
 
   const resetUnmatched = (ids: number[]) => {
