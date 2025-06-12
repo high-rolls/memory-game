@@ -1,7 +1,7 @@
 import matchSfx from "@/assets/audio/match.ogg";
 import Board from "@/components/board";
 import StatusBar from "@/components/status-bar";
-import { useGameSettings } from "@/context/game-settings-context";
+import { useGameSettingsFull } from "@/context/game-settings";
 import { createCardArray } from "@/lib/game";
 import { getRandomEmojisInTheme } from "@/lib/themes";
 import type { CardData } from "@/lib/types";
@@ -15,7 +15,7 @@ type GameState = "initial" | "displaying-cards" | "playing" | "win";
 const confetti = new JSConfetti();
 
 const Play = () => {
-  const { cardCount, iconTheme, icons, setIcons } = useGameSettings();
+  const { cardCount, iconTheme, icons, setIcons } = useGameSettingsFull();
   const [cards, setCards] = useState<CardData[]>(
     createCardArray(cardCount, false)
   );
@@ -28,7 +28,8 @@ const Play = () => {
     setState("win");
     confetti.addConfetti({
       confettiNumber: 16,
-      emojiSize: 50,
+      emojiSize: 100,
+      emojis: icons,
     });
     navigator.vibrate(100);
   }
@@ -104,7 +105,11 @@ const Play = () => {
         state === "win" ? "bg-emerald-900" : "bg-slate-800"
       }`}
     >
-      <Board cards={cards} onCardClicked={handleCardClicked} heightRatio={0.8} />
+      <Board
+        cards={cards}
+        onCardClicked={handleCardClicked}
+        heightRatio={0.8}
+      />
       <StatusBar
         gameState={state}
         matchCount={matchCount}

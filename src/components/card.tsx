@@ -1,4 +1,4 @@
-import { useGameSettings } from "@/context/game-settings-context";
+import { useGameSettings } from "@/context/game-settings";
 import { useWindowSize } from "@/lib/hooks";
 import type { CardData } from "@/lib/types";
 import { motion } from "framer-motion";
@@ -39,7 +39,7 @@ const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
                 : "from-amber-100 to-amber-200"
             }`}
           >
-            {emoji}
+            {isFaceUp ? emoji : ""}
           </div>
 
           {/* Back Face */}
