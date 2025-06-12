@@ -26,11 +26,7 @@ const Play = () => {
 
   if (state === "playing" && matchCount === cardCount / 2) {
     setState("win");
-    confetti.addConfetti({
-      confettiNumber: 16,
-      emojiSize: 100,
-      emojis: icons,
-    });
+    confetti.addConfetti();
     navigator.vibrate(100);
   }
 
@@ -40,15 +36,17 @@ const Play = () => {
         ids.includes(card.id) ? { ...card, isMatched: true } : card
       )
     );
-    playMatchSound();
+    setTimeout(() => playMatchSound(), 300);
   };
 
   const resetUnmatched = (ids: number[]) => {
-    setCards((prev) =>
-      prev.map((card) =>
-        ids.includes(card.id) ? { ...card, isFaceUp: false } : card
-      )
-    );
+    setTimeout(() => {
+      setCards((prev) =>
+        prev.map((card) =>
+          ids.includes(card.id) ? { ...card, isFaceUp: false } : card
+        )
+      );
+    }, 500);
   };
 
   const checkAndResolveMatch = (updatedCards: CardData[]) => {
@@ -57,13 +55,11 @@ const Play = () => {
 
     const [a, b] = faceUp;
 
-    setTimeout(() => {
-      if (a.value === b.value) {
-        markMatched([a.id, b.id]);
-      } else {
-        resetUnmatched([a.id, b.id]);
-      }
-    }, 500);
+    if (a.value === b.value) {
+      markMatched([a.id, b.id]);
+    } else {
+      resetUnmatched([a.id, b.id]);
+    }
   };
 
   const handleCardClicked = (clickedCard: CardData) => {
