@@ -1,8 +1,8 @@
-import type { CardData } from "@/lib/types";
 import Card from "@/components/card";
-import { squarestSides } from "@/lib/math";
-import { useMemo } from "react";
 import { useWindowSize } from "@/lib/hooks";
+import { squarestSides } from "@/lib/math";
+import type { CardData } from "@/lib/types";
+import { useMemo } from "react";
 
 export interface IBoardProps {
   cards: CardData[];

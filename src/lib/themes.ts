@@ -1,4 +1,4 @@
-import type { IconTheme } from "@/lib/types";
+import type { IconTheme } from "@/context/game-settings";
 import { shuffleArray } from "./utils";
 import emojiJSON from "@/assets/json/categories.min.json";
 
@@ -42,22 +42,24 @@ function getEmojisByGroupAndSubgroupPrefix(
 }
 
 export const themeEmojis: Record<IconTheme, string[]> = {
-  "activities": getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Activities"),
-  "animals": getEmojisByGroupAndSubgroupPrefix(
+  activities: getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Activities"),
+  animals: getEmojisByGroupAndSubgroupPrefix(
     emojiJSON,
     "Animals & Nature",
     "animal"
   ),
-  "drinks": getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Food & Drink", "drink"),
-  "flags": getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Flags"),
-  "foods": getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Food & Drink", "food"),
-  "objects": getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Objects"),
-  "people-and-body": getEmojisByGroupAndSubgroupPrefix(emojiJSON, "People & Body"),
+  drinks: getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Food & Drink", "drink"),
+  flags: getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Flags"),
+  foods: getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Food & Drink", "food"),
+  objects: getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Objects"),
+  "people-and-body": getEmojisByGroupAndSubgroupPrefix(
+    emojiJSON,
+    "People & Body"
+  ),
 };
 
 export function getEmojisForTheme(theme: IconTheme, length?: number) {
-  const emojis =
-    themeEmojis[theme] || themeEmojis.animals;
+  const emojis = themeEmojis[theme] || themeEmojis.animals;
   if (length) return emojis.slice(0, length);
   return emojis;
 }
