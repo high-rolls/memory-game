@@ -7,11 +7,11 @@ export function parseIconTheme(
   const validThemes = new Set<IconTheme>([
     "activities",
     "animals",
-    "drinks",
     "flags",
-    "foods",
+    "food-and-drink",
     "objects",
     "people-and-body",
+    "smileys-and-emotion",
   ]);
   if (validThemes.has(themeParam as IconTheme)) {
     return themeParam as IconTheme;
