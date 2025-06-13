@@ -48,13 +48,19 @@ export const themeEmojis: Record<IconTheme, string[]> = {
     "Animals & Nature",
     "animal"
   ),
-  drinks: getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Food & Drink", "drink"),
   flags: getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Flags"),
-  foods: getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Food & Drink", "food"),
+  "food-and-drink": getEmojisByGroupAndSubgroupPrefix(
+    emojiJSON,
+    "Food & Drink"
+  ),
   objects: getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Objects"),
   "people-and-body": getEmojisByGroupAndSubgroupPrefix(
     emojiJSON,
     "People & Body"
+  ),
+  "smileys-and-emotion": getEmojisByGroupAndSubgroupPrefix(
+    emojiJSON,
+    "Smileys & Emotion"
   ),
 };
 

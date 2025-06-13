@@ -1,11 +1,11 @@
 export type IconTheme =
   | "activities"
   | "animals"
-  | "drinks"
   | "flags"
-  | "foods"
+  | "food-and-drink"
   | "objects"
-  | "people-and-body";
+  | "people-and-body"
+  | "smileys-and-emotion";
 
 export type CardCount = 8 | 12 | 16 | 20 | 24 | 28 | 32;
 
