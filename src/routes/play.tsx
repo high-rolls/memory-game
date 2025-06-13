@@ -103,7 +103,7 @@ const Play = () => {
     setTimeout(() => {
       setCards((prev) => prev.map((card) => ({ ...card, isFaceUp: false })));
       setGameState("playing");
-    }, 2000);
+    }, cardCount * 200);
   };
 
   return (
