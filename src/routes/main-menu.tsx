@@ -7,7 +7,7 @@ import {
 import { createCardArray } from "@/lib/game";
 import { getRandomEmojisInTheme } from "@/lib/themes";
 import { useEffect, useMemo } from "react";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 
 const CARD_COUNT_MIN = 8;
 const CARD_COUNT_MAX = 32;
@@ -20,7 +20,6 @@ const CARD_COUNT_VALUES = new Array(
   .map((_, index) => index * CARD_COUNT_STEP + CARD_COUNT_MIN);
 
 function MainMenu() {
-  const navigate = useNavigate();
   const { cardCount, iconTheme, setCardCount, setIcons, setIconTheme } =
     useGameSettingsFull();
 
@@ -97,18 +96,15 @@ function MainMenu() {
                 <option value="foods">🍎 Food</option>
                 <option value="objects">💍 Objects</option>
                 <option value="people-and-body">👄 People & Body</option>
-                <option value="smileys-and-emotion">😎 Smileys & Emotion</option>
+                <option value="smileys-and-emotion">
+                  😎 Smileys & Emotion
+                </option>
               </select>
             </label>
           </div>
-          <button
-            className="w-full btn btn-primary"
-            onClick={() =>
-              navigate(`/memory-game/play?${searchParams.toString()}`)
-            }
-          >
-            Play
-          </button>
+          <Link to={`/play?${searchParams.toString()}`}>
+            <button className="w-full btn btn-primary">Play</button>
+          </Link>
         </div>
       </div>
     </div>
