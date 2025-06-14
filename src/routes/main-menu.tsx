@@ -93,7 +93,7 @@ function MainMenu() {
                 <option value="activities">⚽ Activities</option>
                 <option value="animals">🐸 Animals</option>
                 <option value="flags">🚩 Flags</option>
-                <option value="foods">🍎 Food</option>
+                <option value="food-and-drink">🍎 Food & Drink</option>
                 <option value="objects">💍 Objects</option>
                 <option value="people-and-body">👄 People & Body</option>
                 <option value="smileys-and-emotion">
