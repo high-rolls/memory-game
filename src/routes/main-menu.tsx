@@ -7,7 +7,6 @@ import {
 import { createCardArray } from "@/lib/game";
 import { getRandomEmojisInTheme } from "@/lib/themes";
 import { useEffect, useMemo } from "react";
-import { Link } from "react-router";
 
 const CARD_COUNT_MIN = 8;
 const CARD_COUNT_MAX = 32;
@@ -47,9 +46,9 @@ function MainMenu() {
   searchParams.set("icon-theme", iconTheme);
 
   return (
-    <div className="hero bg-base-100 min-h-dvh">
-      <div className="hero-content flex-col lg:flex-row justify-center">
-        <div className="w-xs flex justify-center lg:justify-start">
+    <div className="hero bg-base-100 h-full">
+      <div className="h-full hero-content flex-col lg:flex-row justify-between">
+        <div className="flex w-xs h-full justify-center lg:justify-start">
           <Board cards={cards} heightRatio={0.5} />
         </div>
         <div className="flex flex-col gap-3">
@@ -102,9 +101,6 @@ function MainMenu() {
               </select>
             </label>
           </div>
-          <Link to={`/play?${searchParams.toString()}`}>
-            <button className="w-full btn btn-primary">Play</button>
-          </Link>
         </div>
       </div>
     </div>

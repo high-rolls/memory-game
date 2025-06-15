@@ -28,7 +28,7 @@ function Board({ cards, onCardClicked, heightRatio }: IBoardProps) {
 
   return (
     <div
-      className="rounded-md grid gap-2 h-full"
+      className="my-auto rounded-md grid gap-1"
       style={{
         gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
         gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,

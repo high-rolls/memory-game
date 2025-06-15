@@ -1,6 +1,7 @@
 import confettiSfx from "@/assets/audio/confetti-cannon.wav";
 import fanfareSfx from "@/assets/audio/kazoo-fanfare.wav";
 import matchSfx from "@/assets/audio/match.ogg";
+import ActionBar from "@/components/action-bar";
 import Board from "@/components/board";
 import StatusBar from "@/components/status-bar";
 import { useGameSettingsFull } from "@/context/game-settings";
@@ -108,20 +109,19 @@ const Play = () => {
 
   return (
     <div
-      className={`flex flex-col justify-center items-center min-h-dvh p-3 ${
+      className={`flex flex-col justify-center items-center gap-3 h-full p-3 ${
         gameState === "win" ? "bg-emerald-950" : "bg-base-200"
       }`}
     >
+      <StatusBar gameState={gameState} matchCount={matchCount} />
       <Board
         cards={cards}
         onCardClicked={handleCardClicked}
-        heightRatio={0.8}
+        heightRatio={0.7}
       />
-      <StatusBar
-        gameState={gameState}
-        matchCount={matchCount}
-        onNewGameButtonClick={startGame}
-      />
+      {(gameState === "initial" || gameState === "win") && (
+        <ActionBar onNewGameButtonClick={startGame} />
+      )}
     </div>
   );
 };
