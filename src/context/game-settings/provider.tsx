@@ -12,7 +12,7 @@ export function GameSettingsProvider({
 }) {
   const [searchParams] = useSearchParams();
   const [cardCount, setCardCount] = useState<CardCount>(
-    parseCardCount(searchParams) ?? 16
+    parseCardCount(searchParams) ?? 36
   );
   const [iconTheme, setIconTheme] = useState<IconTheme>(
     parseIconTheme(searchParams) ?? "animals"

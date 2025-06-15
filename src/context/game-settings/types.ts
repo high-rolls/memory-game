@@ -7,7 +7,7 @@ export type IconTheme =
   | "people-and-body"
   | "smileys-and-emotion";
 
-export type CardCount = 8 | 12 | 16 | 20 | 24 | 28 | 32;
+export type CardCount = number;
 
 type GameSettings = {
   iconTheme: IconTheme;
