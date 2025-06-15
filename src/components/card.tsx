@@ -37,7 +37,7 @@ const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
   return (
     <div
       className="perspective aspect-square w-full h-full"
-      style={{ fontSize: `${relativeCardHeight * 70}vh` }}
+      style={{ fontSize: `${relativeCardHeight * 70}dvh` }}
     >
       <button onClick={onClick} className="relative w-full h-full">
         <motion.div

@@ -108,7 +108,7 @@ const Play = () => {
 
   return (
     <div
-      className={`flex flex-col justify-center items-center min-h-screen p-3 ${
+      className={`flex flex-col justify-center items-center min-h-dvh p-3 ${
         gameState === "win" ? "bg-emerald-950" : "bg-base-200"
       }`}
     >

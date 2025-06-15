@@ -33,7 +33,7 @@ function Board({ cards, onCardClicked, heightRatio }: IBoardProps) {
         gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
         gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
         aspectRatio: `${columns} / ${rows}`,
-        width: `min(100%, ${(heightRatio * 100 * columns) / rows}vh)`,
+        width: `min(100%, ${(heightRatio * 100 * columns) / rows}dvh)`,
       }}
     >
       {cards.map((card) => (

@@ -47,7 +47,7 @@ function MainMenu() {
   searchParams.set("icon-theme", iconTheme);
 
   return (
-    <div className="hero bg-base-200 min-h-screen">
+    <div className="hero bg-base-100 min-h-dvh">
       <div className="hero-content flex-col lg:flex-row justify-center">
         <div className="w-xs flex justify-center lg:justify-start">
           <Board cards={cards} heightRatio={0.5} />
