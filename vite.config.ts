@@ -1,11 +1,9 @@
-import { defineConfig } from "vite";
-import type { AliasOptions } from "vite";
-import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-//@ts-ignore
+import react from "@vitejs/plugin-react";
 import path from "path";
+import type { AliasOptions } from "vite";
+import { defineConfig } from "vite";
 
-//@ts-ignore
 const root = path.resolve(__dirname, "src");
 
 // https://vite.dev/config/
