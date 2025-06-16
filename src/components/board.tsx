@@ -15,7 +15,7 @@ function Board({ cards, onCardClicked, heightRatio }: IBoardProps) {
 
   const [smallSide, largeSide] = useMemo(
     () => squarestSides(cards.length),
-    [cards]
+    [cards.length]
   );
 
   const deviceAspectRatio = useMemo(

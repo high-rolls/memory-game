@@ -1,5 +1,4 @@
 import { useGameSettings } from "@/context/game-settings";
-import { useWindowSize } from "@/lib/hooks";
 import type { CardData } from "@/lib/types";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect, useRef, useState, type MouseEventHandler } from "react";
@@ -10,15 +9,19 @@ type CardProps = CardData & {
 
 const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
   const [isFaceVisible, setIsFaceVisible] = useState(isFaceUp);
+  const [fontSize, setFontSize] = useState(16);
   const { icons } = useGameSettings();
   const cardRef = useRef<HTMLDivElement>(null);
-  const windowSize = useWindowSize();
   const emoji = icons[value];
   const controls = useAnimation();
 
-  const relativeCardHeight = cardRef.current
-    ? cardRef.current.clientHeight / windowSize.height
-    : 0.1;
+  // Scales the emoji font size based on the dynamic viewport height
+  useEffect(() => {
+    if (cardRef.current) {
+      const height = cardRef.current.clientHeight;
+      setFontSize(height * 0.7);
+    }
+  }, [cardRef.current?.clientHeight]);
 
   // Trigger the match animation when isMatched changes
   useEffect(() => {
@@ -37,7 +40,7 @@ const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
   return (
     <div
       className="perspective aspect-square w-full h-full"
-      style={{ fontSize: `${relativeCardHeight * 70}dvh` }}
+      style={{ fontSize: fontSize }}
     >
       <button onClick={onClick} className="relative w-full h-full">
         <motion.div
