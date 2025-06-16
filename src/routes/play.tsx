@@ -111,6 +111,7 @@ const Play = () => {
       timesSeen: 0,
     }));
     setCards(shuffled);
+    setScore(0);
     setGameState("displaying-cards");
 
     setTimeout(() => {
