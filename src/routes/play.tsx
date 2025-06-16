@@ -10,7 +10,7 @@ import { getRandomEmojisInTheme } from "@/lib/themes";
 import type { CardData } from "@/lib/types";
 import { shuffleArray } from "@/lib/utils";
 import JSConfetti from "js-confetti";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSound from "use-sound";
 
 type GameState = "initial" | "displaying-cards" | "playing" | "win";
@@ -24,9 +24,33 @@ const Play = () => {
   );
   const [gameState, setGameState] = useState<GameState>("initial");
   const [score, setScore] = useState(0);
+  const [, setStateTimer] = useState(0);
+  const [displaySeconds, setDisplaySeconds] = useState(0);
   const [playMatchSound] = useSound(matchSfx);
   const [playConfettiSound] = useSound(confettiSfx);
   const [playFanfareSound] = useSound(fanfareSfx);
+
+  useEffect(() => {
+    if (gameState !== "displaying-cards") return;
+
+    const id = setInterval(() => {
+      setStateTimer((prev) => {
+        const next = prev - 200;
+        setDisplaySeconds(Math.ceil(next / 1000)); // update only if it changes
+        if (next <= 0) {
+          clearInterval(id);
+          setCards((prev) =>
+            prev.map((card) => ({ ...card, isFaceUp: false }))
+          );
+          setGameState("playing");
+          return 0;
+        }
+        return next;
+      });
+    }, 200);
+
+    return () => clearInterval(id);
+  }, [gameState]);
 
   const matchCount = cards.filter((card) => card.isMatched).length / 2;
 
@@ -113,11 +137,8 @@ const Play = () => {
     setCards(shuffled);
     setScore(0);
     setGameState("displaying-cards");
-
-    setTimeout(() => {
-      setCards((prev) => prev.map((card) => ({ ...card, isFaceUp: false })));
-      setGameState("playing");
-    }, cardCount * 200);
+    setStateTimer(cardCount * 200);
+    setDisplaySeconds(Math.ceil(cardCount * 0.2));
   };
 
   return (
@@ -126,7 +147,12 @@ const Play = () => {
         gameState === "win" ? "bg-emerald-950" : "bg-base-200"
       }`}
     >
-      <StatusBar gameState={gameState} matchCount={matchCount} score={score} />
+      <StatusBar
+        gameState={gameState}
+        matchCount={matchCount}
+        score={score}
+        displaySeconds={displaySeconds}
+      />
       <Board
         cards={cards}
         onCardClicked={handleCardClicked}

@@ -1,17 +1,42 @@
+import { useEffect, useRef } from "react";
+
 export interface IStatusBarProps {
   gameState: "initial" | "displaying-cards" | "playing" | "win";
   matchCount: number;
   score: number;
+  displaySeconds: number;
 }
 
-function StatusBar({ gameState, matchCount, score }: IStatusBarProps) {
+function StatusBar({
+  gameState,
+  matchCount,
+  score,
+  displaySeconds,
+}: IStatusBarProps) {
+  const countdownRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (countdownRef.current) {
+      const timerSeconds = displaySeconds.toString();
+      countdownRef.current.style.setProperty("--value", timerSeconds);
+      //countdownRef.current.textContent = timerSeconds;
+    }
+  }, [displaySeconds]);
+
   let title;
   switch (gameState) {
     case "initial":
       title = "Press Play to start";
       break;
     case "displaying-cards":
-      title = "Get Ready...";
+      title = (
+        <>
+          {"Get Ready... "}
+          <span className="countdown">
+            <span aria-live="polite" ref={countdownRef}></span>
+          </span>
+        </>
+      );
       break;
     case "playing":
       title = `${matchCount > 0 ? matchCount : "No"} match${
