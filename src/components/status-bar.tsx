@@ -1,9 +1,10 @@
 export interface IStatusBarProps {
   gameState: "initial" | "displaying-cards" | "playing" | "win";
   matchCount: number;
+  score: number;
 }
 
-function StatusBar({ gameState, matchCount }: IStatusBarProps) {
+function StatusBar({ gameState, matchCount, score }: IStatusBarProps) {
   let title;
   switch (gameState) {
     case "initial":
@@ -23,8 +24,15 @@ function StatusBar({ gameState, matchCount }: IStatusBarProps) {
   }
 
   return (
-    <div className="flex w-full flex-col items-center">
-      <h1 className="text-3xl sm:text-5xl font-bold text-gray-100">{title}</h1>
+    <div className="flex flex-col md:flex-row w-full justify-center md:justify-evenly items-center">
+      <h1 className="text-3xl sm:text-5xl font-bold text-base-content">
+        {title}
+      </h1>
+      {(gameState === "playing" || gameState === "win") && (
+        <h1 className="text-3xl sm:text-5xl font-bold text-base-content">
+          Score: {Math.floor(score)}
+        </h1>
+      )}
     </div>
   );
 }

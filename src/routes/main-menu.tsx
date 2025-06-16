@@ -74,7 +74,7 @@ function MainMenu() {
           <h1 className="text-3xl font-bold">Settings</h1>
           <div className="w-full max-w-xs">
             <label>
-              <span className="text-lg font-bold text-slate-400">
+              <span className="text-lg font-bold text-base-content">
                 Card Count
               </span>
               <input
@@ -100,7 +100,7 @@ function MainMenu() {
           </div>
           <div className="w-full max-w-xs">
             <label>
-              <span className="text-lg font-bold text-slate-400">
+              <span className="text-lg font-bold text-base-content">
                 Emoji Theme
               </span>
               <select
@@ -122,7 +122,7 @@ function MainMenu() {
           </div>
           <div className="w-full max-w-xs">
             <label>
-              <span className="text-lg font-bold text-slate-400">
+              <span className="text-lg font-bold text-base-content">
                 Card Color
               </span>
               <select

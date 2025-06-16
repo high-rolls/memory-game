@@ -17,17 +17,17 @@ const colorThemes = {
   amber: {
     borderColor: "border-amber-700",
     bgColor: "from-amber-500 to-amber-600",
-    faceColor: "var(--color-amber-200)",
+    faceColor: "#fde68a",
   },
   emerald: {
     borderColor: "border-emerald-700",
     bgColor: "from-emerald-500 to-emerald-600",
-    faceColor: "var(--color-emerald-200)",
+    faceColor: "#a7f3d0",
   },
   purple: {
     borderColor: "border-purple-700",
     bgColor: "from-purple-500 to-purple-600",
-    faceColor: "var(--color-purple-200)",
+    faceColor: "#e9d5ff",
   },
 };
 
@@ -88,7 +88,7 @@ const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
             ref={cardRef}
             className={`card-face backface-hidden ${borderColor}`}
             animate={{
-              backgroundColor: isMatched ? "var(--color-lime-300)" : faceColor,
+              backgroundColor: isMatched ? "#bbf451" : faceColor,
             }}
           >
             <motion.span animate={controls} initial={{ scale: 1 }}>

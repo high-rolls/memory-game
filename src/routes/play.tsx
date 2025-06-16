@@ -23,6 +23,7 @@ const Play = () => {
     createCardArray(cardCount, false)
   );
   const [gameState, setGameState] = useState<GameState>("initial");
+  const [score, setScore] = useState(0);
   const [playMatchSound] = useSound(matchSfx);
   const [playConfettiSound] = useSound(confettiSfx);
   const [playFanfareSound] = useSound(fanfareSfx);
@@ -39,7 +40,15 @@ const Play = () => {
     }, 500);
   }
 
-  const markMatched = (ids: number[]) => {
+  const markMatched = (ids: number[], updatedCards: CardData[]) => {
+    let matchScore = 0;
+    ids.forEach((id) => {
+      const cardById = updatedCards.find((card) => card.id === id);
+      if (cardById) {
+        matchScore += 100 / cardById.timesSeen;
+      }
+    });
+    setScore((prev) => prev + matchScore);
     setCards((prev) =>
       prev.map((card) =>
         ids.includes(card.id) ? { ...card, isMatched: true } : card
@@ -68,7 +77,7 @@ const Play = () => {
     const [a, b] = faceUp;
 
     if (a.value === b.value) {
-      markMatched([a.id, b.id]);
+      markMatched([a.id, b.id], updatedCards);
     } else {
       resetUnmatched([a.id, b.id]);
     }
@@ -82,7 +91,9 @@ const Play = () => {
     if (currentlyFaceUp.length >= 2) return;
 
     const updatedCards = cards.map((card) =>
-      card.id === clickedCard.id ? { ...card, isFaceUp: true } : card
+      card.id === clickedCard.id
+        ? { ...card, isFaceUp: true, timesSeen: clickedCard.timesSeen + 1 }
+        : card
     );
     setCards(updatedCards);
 
@@ -97,6 +108,7 @@ const Play = () => {
       ...card,
       isFaceUp: true,
       isMatched: false,
+      timesSeen: 0,
     }));
     setCards(shuffled);
     setGameState("displaying-cards");
@@ -113,7 +125,7 @@ const Play = () => {
         gameState === "win" ? "bg-emerald-950" : "bg-base-200"
       }`}
     >
-      <StatusBar gameState={gameState} matchCount={matchCount} />
+      <StatusBar gameState={gameState} matchCount={matchCount} score={score} />
       <Board
         cards={cards}
         onCardClicked={handleCardClicked}
