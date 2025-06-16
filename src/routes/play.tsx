@@ -132,31 +132,43 @@ const Play = () => {
     }
   };
 
+  const revealCards = (duration: number) => {
+    setCards((prev) => prev.map((card) => ({ ...card, isFaceUp: true })));
+    setGameState("displaying-cards");
+    setStateTimer(duration * 1000);
+    setDisplaySeconds(Math.ceil(duration));
+  };
+
   const startGame = () => {
     const otherThemes = Object.keys(themeEmojis).filter(
       (k) => k !== iconTheme
     ) as IconTheme[];
+    // Pick power icons randomly from other themes
     const powerIcons = new Array(powerCardCount).fill("").map(() => {
       const randomTheme =
         otherThemes[Math.floor(Math.random() * otherThemes.length)];
       return getRandomEmojisInTheme(randomTheme, 1)[0];
     });
+
     setIcons([
       ...powerIcons,
       ...getRandomEmojisInTheme(iconTheme, icons.length - powerCardCount),
     ]);
+
     const shuffled = shuffleArray(cards).map((card) => ({
       ...card,
-      isFaceUp: true,
       isMatched: false,
       timesSeen: 0,
     }));
     setCards(shuffled);
     setScore(0);
-    setGameState("displaying-cards");
-    setStateTimer(cardCount * 200);
-    setDisplaySeconds(Math.ceil(cardCount * 0.2));
+    revealCards(cardCount * 0.2);
     setRevealAbilityCount(0);
+  };
+
+  const useRevealAbility = () => {
+    revealCards(5);
+    setRevealAbilityCount((prev) => prev - 1);
   };
 
   return (
@@ -172,20 +184,15 @@ const Play = () => {
       />
       <Board
         cards={cards}
-        onCardClicked={handleCardClicked}
         heightRatio={0.7}
+        matchesAreVisible={gameState !== "displaying-cards"}
+        onCardClicked={handleCardClicked}
       />
       <ActionBar
         gameState={gameState}
         revealAbilityCount={revealAbilityCount}
         onNewGameButtonClick={startGame}
-        onRevealAllButtonClick={() => {
-          setCards((prev) => prev.map((card) => ({ ...card, isFaceUp: true })));
-          setGameState("displaying-cards");
-          setStateTimer(5000);
-          setDisplaySeconds(5);
-          setRevealAbilityCount((prev) => prev - 1);
-        }}
+        onRevealAllButtonClick={useRevealAbility}
       />
     </div>
   );

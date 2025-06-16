@@ -6,11 +6,17 @@ import { useMemo } from "react";
 
 export interface IBoardProps {
   cards: CardData[];
-  onCardClicked?: (card: CardData) => void;
   heightRatio: number;
+  matchesAreVisible?: boolean;
+  onCardClicked?: (card: CardData) => void;
 }
 
-function Board({ cards, onCardClicked, heightRatio }: IBoardProps) {
+function Board({
+  cards,
+  heightRatio,
+  matchesAreVisible = true,
+  onCardClicked,
+}: IBoardProps) {
   const windowSize = useWindowSize();
 
   const [smallSide, largeSide] = useMemo(
@@ -40,6 +46,7 @@ function Board({ cards, onCardClicked, heightRatio }: IBoardProps) {
         <Card
           {...card}
           key={card.id}
+          isVisible={card.isMatched ? matchesAreVisible : true}
           onClick={onCardClicked ? () => onCardClicked(card) : undefined}
         />
       ))}

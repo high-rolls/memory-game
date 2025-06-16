@@ -10,6 +10,7 @@ import {
 } from "react";
 
 type CardProps = CardData & {
+  isVisible: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
@@ -36,6 +37,7 @@ const Card = ({
   isFaceUp,
   isMatched,
   isPowerCard,
+  isVisible,
   onClick,
 }: CardProps) => {
   const [isFaceVisible, setIsFaceVisible] = useState(isFaceUp);
@@ -76,7 +78,7 @@ const Card = ({
   return (
     <div
       className="perspective aspect-square w-full h-full"
-      style={{ fontSize: fontSize }}
+      style={{ fontSize: fontSize, opacity: isVisible ? 1 : 0.2 }}
     >
       <button onClick={onClick} className="relative w-full h-full">
         <motion.div
