@@ -19,12 +19,9 @@
 
 @layer components {
   .card-face {
-    @apply absolute w-full h-full flex items-center justify-center rounded-md shadow-md border-2 border-amber-700;
+    @apply absolute w-full h-full flex items-center justify-center rounded-md shadow-md border-2;
     font-family: "Noto Color Emoji";
-    text-shadow:
-   -1px -1px 0 #000,  
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-     1px 1px 0 #000;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+      1px 1px 0 #000;
   }
 }

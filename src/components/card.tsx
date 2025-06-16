@@ -1,19 +1,47 @@
 import { useGameSettings } from "@/context/game-settings";
 import type { CardData } from "@/lib/types";
 import { motion, useAnimation } from "framer-motion";
-import { useEffect, useRef, useState, type MouseEventHandler } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEventHandler,
+} from "react";
 
 type CardProps = CardData & {
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
+const colorThemes = {
+  amber: {
+    borderColor: "border-amber-700",
+    bgColor: "from-amber-500 to-amber-600",
+    faceColor: "var(--color-amber-200)",
+  },
+  emerald: {
+    borderColor: "border-emerald-700",
+    bgColor: "from-emerald-500 to-emerald-600",
+    faceColor: "var(--color-emerald-200)",
+  },
+  purple: {
+    borderColor: "border-purple-700",
+    bgColor: "from-purple-500 to-purple-600",
+    faceColor: "var(--color-purple-200)",
+  },
+};
+
 const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
   const [isFaceVisible, setIsFaceVisible] = useState(isFaceUp);
   const [fontSize, setFontSize] = useState(16);
-  const { icons } = useGameSettings();
+  const { cardColor, icons } = useGameSettings();
   const cardRef = useRef<HTMLDivElement>(null);
   const emoji = icons[value];
   const controls = useAnimation();
+
+  const { borderColor, bgColor, faceColor } = useMemo(() => {
+    return colorThemes[cardColor];
+  }, [cardColor]);
 
   // Scales the emoji font size based on the dynamic viewport height
   useEffect(() => {
@@ -58,9 +86,9 @@ const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
           {/* Front Face */}
           <motion.div
             ref={cardRef}
-            className={`card-face backface-hidden`}
+            className={`card-face backface-hidden ${borderColor}`}
             animate={{
-              backgroundColor: isMatched ? "#bef264" : "#fde68a",
+              backgroundColor: isMatched ? "var(--color-lime-300)" : faceColor,
             }}
           >
             <motion.span animate={controls} initial={{ scale: 1 }}>
@@ -69,7 +97,9 @@ const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
           </motion.div>
 
           {/* Back Face */}
-          <div className="card-face rotate-y-180 backface-hidden bg-gradient-to-br from-amber-500 to-amber-600" />
+          <div
+            className={`card-face rotate-y-180 backface-hidden ${borderColor} bg-gradient-to-br ${bgColor}`}
+          />
         </motion.div>
       </button>
     </div>

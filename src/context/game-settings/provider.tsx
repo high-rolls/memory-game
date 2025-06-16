@@ -1,9 +1,13 @@
 import { getEmojisForTheme } from "@/lib/themes";
 import { useMemo, useState } from "react";
 import { GameSettingsActionsContext, GameSettingsContext } from "./context";
-import type { CardCount, IconTheme } from "./types";
+import type { CardColor, CardCount, IconTheme } from "./types";
 import { useSearchParams } from "react-router";
-import { parseCardCount, parseIconTheme } from "@/lib/url-params";
+import {
+  parseCardColor,
+  parseCardCount,
+  parseIconTheme,
+} from "@/lib/url-params";
 
 export function GameSettingsProvider({
   children,
@@ -17,19 +21,23 @@ export function GameSettingsProvider({
   const [iconTheme, setIconTheme] = useState<IconTheme>(
     parseIconTheme(searchParams) ?? "animals"
   );
+  const [cardColor, setCardColor] = useState<CardColor>(
+    parseCardColor(searchParams) ?? "amber"
+  );
   const [icons, setIcons] = useState<string[]>(() =>
     getEmojisForTheme(iconTheme, cardCount / 2)
   );
 
   const settings = useMemo(
-    () => ({ iconTheme, cardCount, icons }),
-    [iconTheme, cardCount, icons]
+    () => ({ iconTheme, cardColor, cardCount, icons }),
+    [iconTheme, cardColor, cardCount, icons]
   );
 
   const actions = useMemo(
     () => ({
-      setIconTheme,
+      setCardColor,
       setCardCount,
+      setIconTheme,
       setIcons,
     }),
     []

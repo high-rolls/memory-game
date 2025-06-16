@@ -1,3 +1,5 @@
+export type CardColor = "amber" | "emerald" | "purple";
+export type CardCount = number;
 export type IconTheme =
   | "activities"
   | "animals"
@@ -7,17 +9,17 @@ export type IconTheme =
   | "people-and-body"
   | "smileys-and-emotion";
 
-export type CardCount = number;
-
 type GameSettings = {
-  iconTheme: IconTheme;
+  cardColor: CardColor;
   cardCount: CardCount;
+  iconTheme: IconTheme;
   icons: string[];
 };
 
 type GameSettingsActions = {
-  setIconTheme: (theme: IconTheme) => void;
+  setCardColor: (color: CardColor) => void;
   setCardCount: (count: CardCount) => void;
+  setIconTheme: (theme: IconTheme) => void;
   setIcons: (icons: string[]) => void;
 };
 

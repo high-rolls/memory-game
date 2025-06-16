@@ -1,4 +1,4 @@
-import type { CardCount, IconTheme } from "@/context/game-settings";
+import type { CardColor, CardCount, IconTheme } from "@/context/game-settings";
 
 export function parseIconTheme(
   searchParams: URLSearchParams
@@ -26,5 +26,15 @@ export function parseCardCount(
   const parsedCount = Number(countParam);
   if (validCounts.has(parsedCount as CardCount)) {
     return parsedCount as CardCount;
+  }
+}
+
+export function parseCardColor(
+  searchParams: URLSearchParams
+): CardColor | undefined {
+  const colorParam = searchParams.get("card-color");
+  const validColors = new Set<CardColor>(["amber", "emerald", "purple"]);
+  if (validColors.has(colorParam as CardColor)) {
+    return colorParam as CardColor;
   }
 }

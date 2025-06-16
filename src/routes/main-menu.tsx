@@ -1,6 +1,7 @@
 import Board from "@/components/board";
 import {
   useGameSettingsFull,
+  type CardColor,
   type CardCount,
   type IconTheme,
 } from "@/context/game-settings";
@@ -18,9 +19,22 @@ const CARD_COUNT_VALUES = new Array(
   .fill(0)
   .map((_, index) => index * CARD_COUNT_STEP + CARD_COUNT_MIN);
 
+const colorClass = {
+  amber: "bg-amber-600",
+  emerald: "bg-emerald-600",
+  purple: "bg-purple-600",
+};
+
 function MainMenu() {
-  const { cardCount, iconTheme, setCardCount, setIcons, setIconTheme } =
-    useGameSettingsFull();
+  const {
+    cardColor,
+    cardCount,
+    iconTheme,
+    setCardColor,
+    setCardCount,
+    setIcons,
+    setIconTheme,
+  } = useGameSettingsFull();
 
   // Create a separate card collection for each board size
   const cards = useMemo(() => createCardArray(cardCount, true), [cardCount]);
@@ -31,6 +45,10 @@ function MainMenu() {
     () => setIcons(getRandomEmojisInTheme(iconTheme, cardCount / 2)),
     [iconTheme, cardCount, setIcons]
   );
+
+  const handleCardColorChange = (value: string) => {
+    setCardColor(value as CardColor);
+  };
 
   const handleCardCountChange = (value: string) => {
     const intValue = parseInt(value) as CardCount;
@@ -44,15 +62,16 @@ function MainMenu() {
   const searchParams = new URLSearchParams();
   searchParams.set("card-count", cardCount.toString());
   searchParams.set("icon-theme", iconTheme);
+  searchParams.set("card-color", cardColor);
 
   return (
     <div className="hero bg-base-100 h-full">
       <div className="h-full hero-content flex-col lg:flex-row justify-between">
         <div className="flex w-xs h-full justify-center lg:justify-start">
-          <Board cards={cards} heightRatio={0.5} />
+          <Board cards={cards} heightRatio={0.4} />
         </div>
         <div className="flex flex-col gap-3">
-          <h1 className="text-3xl font-bold">Memoji</h1>
+          <h1 className="text-3xl font-bold">Settings</h1>
           <div className="w-full max-w-xs">
             <label>
               <span className="text-lg font-bold text-slate-400">
@@ -82,7 +101,7 @@ function MainMenu() {
           <div className="w-full max-w-xs">
             <label>
               <span className="text-lg font-bold text-slate-400">
-                Card Theme
+                Emoji Theme
               </span>
               <select
                 defaultValue={iconTheme}
@@ -97,6 +116,28 @@ function MainMenu() {
                 <option value="people-and-body">👄 People & Body</option>
                 <option value="smileys-and-emotion">
                   😎 Smileys & Emotion
+                </option>
+              </select>
+            </label>
+          </div>
+          <div className="w-full max-w-xs">
+            <label>
+              <span className="text-lg font-bold text-slate-400">
+                Card Color
+              </span>
+              <select
+                defaultValue={cardColor}
+                className={`select ${colorClass[cardColor]}`}
+                onChange={(event) => handleCardColorChange(event.target.value)}
+              >
+                <option className={colorClass["amber"]} value="amber">
+                  Amber
+                </option>
+                <option className={colorClass["emerald"]} value="emerald">
+                  Emerald
+                </option>
+                <option className={colorClass["purple"]} value="purple">
+                  Purple
                 </option>
               </select>
             </label>
