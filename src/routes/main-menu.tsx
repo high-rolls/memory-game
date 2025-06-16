@@ -10,7 +10,7 @@ import { useEffect, useMemo } from "react";
 import { Link } from "react-router";
 
 const CARD_COUNT_MIN = 12;
-const CARD_COUNT_MAX = 120;
+const CARD_COUNT_MAX = 84;
 const CARD_COUNT_STEP = 12;
 
 const CARD_COUNT_VALUES = new Array(
