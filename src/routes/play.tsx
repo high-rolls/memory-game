@@ -182,7 +182,7 @@ const Play = () => {
         onRevealAllButtonClick={() => {
           setCards((prev) => prev.map((card) => ({ ...card, isFaceUp: true })));
           setGameState("displaying-cards");
-          setStateTimer(3000);
+          setStateTimer(5000);
           setDisplaySeconds(5);
           setRevealAbilityCount((prev) => prev - 1);
         }}
