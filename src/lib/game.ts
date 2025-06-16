@@ -1,6 +1,9 @@
 import type { CardData } from "@/lib/types";
 
-export function createCardArray (numCards: number, isFaceUp: boolean): CardData[] {
+export function createCardArray(
+  numCards: number,
+  isFaceUp: boolean
+): CardData[] {
   if (numCards < 2 || numCards % 2 !== 0) {
     throw new Error("Card amount must be a positive number divisible by 2.");
   }
@@ -11,5 +14,6 @@ export function createCardArray (numCards: number, isFaceUp: boolean): CardData[
     value,
     isFaceUp,
     isMatched: false,
+    timesSeen: 0,
   }));
-};
+}
