@@ -7,14 +7,14 @@ function StatusBar({ gameState, matchCount }: IStatusBarProps) {
   let title;
   switch (gameState) {
     case "initial":
-      title = "Memoji";
+      title = "Press Play to start";
       break;
     case "displaying-cards":
       title = "Get Ready...";
       break;
     case "playing":
       title = `${matchCount > 0 ? matchCount : "No"} match${
-        matchCount > 1 ? "es" : ""
+        matchCount !== 1 ? "es" : ""
       }`;
       break;
     case "win":
