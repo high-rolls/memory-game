@@ -3,6 +3,7 @@ export type CardData = {
   value: number;
   isFaceUp: boolean;
   isMatched: boolean;
+  isPowerCard: boolean;
   timesSeen: number;
 };
 

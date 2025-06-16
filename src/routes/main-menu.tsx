@@ -37,7 +37,10 @@ function MainMenu() {
   } = useGameSettingsFull();
 
   // Create a separate card collection for each board size
-  const cards = useMemo(() => createCardArray(cardCount, true), [cardCount]);
+  const cards = useMemo(
+    () => createCardArray(cardCount / 2, 0, true),
+    [cardCount]
+  );
 
   // Display the card icons always in the same order in the menu,
   // and memorize them based on the icon theme and card count.

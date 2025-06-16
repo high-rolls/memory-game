@@ -1,19 +1,21 @@
 import type { CardData } from "@/lib/types";
 
 export function createCardArray(
-  numCards: number,
+  numPairs: number,
+  numPowerPairs: number,
   isFaceUp: boolean
 ): CardData[] {
-  if (numCards < 2 || numCards % 2 !== 0) {
-    throw new Error("Card amount must be a positive number divisible by 2.");
+  if (numPairs <= 0) {
+    throw new Error("Number of pairs must be a positive number.");
   }
 
-  const values = Array.from({ length: numCards / 2 }, (_, i) => i);
+  const values = Array.from({ length: numPairs }, (_, i) => i);
   return [...values, ...values].map((value, index) => ({
     id: length * 100 + index,
     value,
     isFaceUp,
     isMatched: false,
+    isPowerCard: value < numPowerPairs,
     timesSeen: 0,
   }));
 }

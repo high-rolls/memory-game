@@ -31,7 +31,13 @@ const colorThemes = {
   },
 };
 
-const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
+const Card = ({
+  value,
+  isFaceUp,
+  isMatched,
+  isPowerCard,
+  onClick,
+}: CardProps) => {
   const [isFaceVisible, setIsFaceVisible] = useState(isFaceUp);
   const [fontSize, setFontSize] = useState(16);
   const { cardColor, icons } = useGameSettings();
@@ -40,8 +46,10 @@ const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
   const controls = useAnimation();
 
   const { borderColor, bgColor, faceColor } = useMemo(() => {
+    if (isMatched && isPowerCard)
+      return { ...colorThemes[cardColor], borderColor: "border-teal-200" };
     return colorThemes[cardColor];
-  }, [cardColor]);
+  }, [cardColor, isMatched, isPowerCard]);
 
   // Scales the emoji font size based on the dynamic viewport height
   useEffect(() => {
@@ -88,7 +96,11 @@ const Card = ({ value, isFaceUp, isMatched, onClick }: CardProps) => {
             ref={cardRef}
             className={`card-face backface-hidden ${borderColor}`}
             animate={{
-              backgroundColor: isMatched ? "#bbf451" : faceColor,
+              backgroundColor: isMatched
+                ? isPowerCard
+                  ? "#06b6d4"
+                  : "#bbf451"
+                : faceColor,
             }}
           >
             <motion.span animate={controls} initial={{ scale: 1 }}>

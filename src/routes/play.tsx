@@ -4,9 +4,9 @@ import matchSfx from "@/assets/audio/match.ogg";
 import ActionBar from "@/components/action-bar";
 import Board from "@/components/board";
 import StatusBar from "@/components/status-bar";
-import { useGameSettingsFull } from "@/context/game-settings";
+import { useGameSettingsFull, type IconTheme } from "@/context/game-settings";
 import { createCardArray } from "@/lib/game";
-import { getRandomEmojisInTheme } from "@/lib/themes";
+import { getRandomEmojisInTheme, themeEmojis } from "@/lib/themes";
 import type { CardData } from "@/lib/types";
 import { shuffleArray } from "@/lib/utils";
 import JSConfetti from "js-confetti";
@@ -19,14 +19,15 @@ const confetti = new JSConfetti();
 
 const Play = () => {
   const { cardCount, iconTheme, icons, setIcons } = useGameSettingsFull();
+  const powerCardCount = Math.floor(cardCount / 12);
   const [cards, setCards] = useState<CardData[]>(
-    createCardArray(cardCount, false)
+    createCardArray(cardCount / 2, powerCardCount, false)
   );
   const [gameState, setGameState] = useState<GameState>("initial");
   const [score, setScore] = useState(0);
   const [, setStateTimer] = useState(0);
   const [displaySeconds, setDisplaySeconds] = useState(0);
-  const [revealAbilityCount, setRevealAbilityCount] = useState(3);
+  const [revealAbilityCount, setRevealAbilityCount] = useState(0);
 
   const [playMatchSound] = useSound(matchSfx);
   const [playConfettiSound] = useSound(confettiSfx);
@@ -74,6 +75,9 @@ const Play = () => {
         matchScore += 100 / cardById.timesSeen;
       }
     });
+    const isPowerPair =
+      updatedCards.find((card) => card.id === ids[0])?.isPowerCard ?? false;
+    if (isPowerPair) setRevealAbilityCount((prev) => prev + 1);
     setScore((prev) => prev + matchScore);
     setCards((prev) =>
       prev.map((card) =>
@@ -129,7 +133,18 @@ const Play = () => {
   };
 
   const startGame = () => {
-    setIcons(getRandomEmojisInTheme(iconTheme, icons.length));
+    const otherThemes = Object.keys(themeEmojis).filter(
+      (k) => k !== iconTheme
+    ) as IconTheme[];
+    const powerIcons = new Array(powerCardCount).fill("").map(() => {
+      const randomTheme =
+        otherThemes[Math.floor(Math.random() * otherThemes.length)];
+      return getRandomEmojisInTheme(randomTheme, 1)[0];
+    });
+    setIcons([
+      ...powerIcons,
+      ...getRandomEmojisInTheme(iconTheme, icons.length - powerCardCount),
+    ]);
     const shuffled = shuffleArray(cards).map((card) => ({
       ...card,
       isFaceUp: true,
@@ -141,7 +156,7 @@ const Play = () => {
     setGameState("displaying-cards");
     setStateTimer(cardCount * 200);
     setDisplaySeconds(Math.ceil(cardCount * 0.2));
-    setRevealAbilityCount(3);
+    setRevealAbilityCount(0);
   };
 
   return (
@@ -168,7 +183,7 @@ const Play = () => {
           setCards((prev) => prev.map((card) => ({ ...card, isFaceUp: true })));
           setGameState("displaying-cards");
           setStateTimer(3000);
-          setDisplaySeconds(3);
+          setDisplaySeconds(5);
           setRevealAbilityCount((prev) => prev - 1);
         }}
       />
