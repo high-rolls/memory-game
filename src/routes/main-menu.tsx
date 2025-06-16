@@ -8,9 +8,9 @@ import { createCardArray } from "@/lib/game";
 import { getRandomEmojisInTheme } from "@/lib/themes";
 import { useEffect, useMemo } from "react";
 
-const CARD_COUNT_MIN = 8;
-const CARD_COUNT_MAX = 32;
-const CARD_COUNT_STEP = 4;
+const CARD_COUNT_MIN = 12;
+const CARD_COUNT_MAX = 84;
+const CARD_COUNT_STEP = 12;
 
 const CARD_COUNT_VALUES = new Array(
   (CARD_COUNT_MAX - CARD_COUNT_MIN) / CARD_COUNT_STEP + 1
