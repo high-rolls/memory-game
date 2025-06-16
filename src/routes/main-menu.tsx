@@ -67,8 +67,10 @@ function MainMenu() {
   return (
     <div className="hero bg-base-100 h-full">
       <div className="h-full hero-content flex-col lg:flex-row justify-between">
-        <div className="flex w-xs h-full justify-center lg:justify-start">
-          <Board cards={cards} heightRatio={0.4} />
+        <div className="flex-1 flex flex-col justify-center">
+          <div className="flex w-xs md:w-md justify-center lg:justify-start">
+            <Board cards={cards} heightRatio={0.4} />
+          </div>
         </div>
         <div className="flex flex-col gap-3">
           <h1 className="text-3xl font-bold">Settings</h1>

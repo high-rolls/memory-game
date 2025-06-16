@@ -13,7 +13,7 @@ import JSConfetti from "js-confetti";
 import { useEffect, useState } from "react";
 import useSound from "use-sound";
 
-type GameState = "initial" | "displaying-cards" | "playing" | "win";
+export type GameState = "initial" | "displaying-cards" | "playing" | "win";
 
 const confetti = new JSConfetti();
 
@@ -26,6 +26,8 @@ const Play = () => {
   const [score, setScore] = useState(0);
   const [, setStateTimer] = useState(0);
   const [displaySeconds, setDisplaySeconds] = useState(0);
+  const [revealAbilityCount, setRevealAbilityCount] = useState(3);
+
   const [playMatchSound] = useSound(matchSfx);
   const [playConfettiSound] = useSound(confettiSfx);
   const [playFanfareSound] = useSound(fanfareSfx);
@@ -40,7 +42,7 @@ const Play = () => {
         if (next <= 0) {
           clearInterval(id);
           setCards((prev) =>
-            prev.map((card) => ({ ...card, isFaceUp: false }))
+            prev.map((card) => ({ ...card, isFaceUp: card.isMatched }))
           );
           setGameState("playing");
           return 0;
@@ -139,17 +141,17 @@ const Play = () => {
     setGameState("displaying-cards");
     setStateTimer(cardCount * 200);
     setDisplaySeconds(Math.ceil(cardCount * 0.2));
+    setRevealAbilityCount(3);
   };
 
   return (
     <div
-      className={`flex flex-col justify-center items-center gap-3 h-full p-3 ${
+      className={`flex flex-col justify-evenly items-center gap-3 h-full p-3 ${
         gameState === "win" ? "bg-emerald-950" : "bg-base-200"
       }`}
     >
       <StatusBar
         gameState={gameState}
-        matchCount={matchCount}
         score={score}
         displaySeconds={displaySeconds}
       />
@@ -158,9 +160,18 @@ const Play = () => {
         onCardClicked={handleCardClicked}
         heightRatio={0.7}
       />
-      {(gameState === "initial" || gameState === "win") && (
-        <ActionBar onNewGameButtonClick={startGame} />
-      )}
+      <ActionBar
+        gameState={gameState}
+        revealAbilityCount={revealAbilityCount}
+        onNewGameButtonClick={startGame}
+        onRevealAllButtonClick={() => {
+          setCards((prev) => prev.map((card) => ({ ...card, isFaceUp: true })));
+          setGameState("displaying-cards");
+          setStateTimer(3000);
+          setDisplaySeconds(3);
+          setRevealAbilityCount((prev) => prev - 1);
+        }}
+      />
     </div>
   );
 };

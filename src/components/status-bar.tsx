@@ -1,18 +1,13 @@
+import type { GameState } from "@/routes/play";
 import { useEffect, useRef } from "react";
 
 export interface IStatusBarProps {
-  gameState: "initial" | "displaying-cards" | "playing" | "win";
-  matchCount: number;
+  gameState: GameState;
   score: number;
   displaySeconds: number;
 }
 
-function StatusBar({
-  gameState,
-  matchCount,
-  score,
-  displaySeconds,
-}: IStatusBarProps) {
+function StatusBar({ gameState, score, displaySeconds }: IStatusBarProps) {
   const countdownRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -24,6 +19,7 @@ function StatusBar({
   }, [displaySeconds]);
 
   let title;
+  let subtitle;
   switch (gameState) {
     case "initial":
       title = "Press Play to start";
@@ -39,24 +35,25 @@ function StatusBar({
       );
       break;
     case "playing":
-      title = `${matchCount > 0 ? matchCount : "No"} match${
-        matchCount !== 1 ? "es" : ""
-      }`;
+      title = `Score: ${Math.floor(score)}`;
       break;
     case "win":
       title = "You've won!";
+      subtitle = (
+        <span>
+          Score: <span className="font-bold">{Math.floor(score)}</span>
+        </span>
+      );
       break;
   }
 
   return (
-    <div className="flex flex-col md:flex-row w-full justify-center md:justify-evenly items-center">
+    <div className="flex flex-col md:flex-row w-full justify-center md:justify-evenly items-baseline">
       <h1 className="text-3xl sm:text-5xl font-bold text-base-content">
         {title}
       </h1>
-      {(gameState === "playing" || gameState === "win") && (
-        <h1 className="text-3xl sm:text-5xl font-bold text-base-content">
-          Score: {Math.floor(score)}
-        </h1>
+      {subtitle && (
+        <h2 className="text-2xl sm:text-3xl text-base-content">{subtitle}</h2>
       )}
     </div>
   );
