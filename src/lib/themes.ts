@@ -1,5 +1,4 @@
 import type { IconTheme } from "@/context/game-settings";
-import { shuffleArray } from "./utils";
 import emojiJSON from "@/assets/json/categories.min.json";
 
 type EmojiEntry = {
@@ -87,8 +86,11 @@ export function getRandomEmojisInTheme(theme: IconTheme, length: number) {
       "Provided length is greater than the number of emoji in theme."
     );
   }
-  const shuffled = shuffleArray(allEmojis);
-  return shuffled.slice(0, length);
+  const emojis = [];
+  for (let i = 0; i < length; i++) {
+    emojis.push(getRandomEmojiInTheme(theme));
+  }
+  return emojis;
 }
 
 export function getRandomEmojiInTheme(theme: IconTheme) {

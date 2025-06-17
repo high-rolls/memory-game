@@ -37,8 +37,8 @@ export function createCardArray(
 
   for (let i = 0; i < numPairs; i++) {
     const emoji = emojis[i];
-    const id1 = i * 2;
-    const id2 = i * 2 + 1;
+    const id1 = numPairs * 100 + i * 2;
+    const id2 = id1 + 1;
     const isPowerCard = i < numPowerPairs;
     cards.push(
       {
