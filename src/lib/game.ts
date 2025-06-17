@@ -22,11 +22,15 @@ export function createCardArray(
     (k) => k !== iconTheme
   ) as IconTheme[];
   // Pick power icons randomly from other themes
-  const powerEmojis = [];
+  const powerEmojis: string[] = [];
   for (let i = 0; i < numPowerPairs; i++) {
-    const randomThemeIndex = Math.floor(Math.random() * otherThemes.length);
-    const randomTheme = otherThemes[randomThemeIndex];
-    powerEmojis.push(getRandomEmojiInTheme(randomTheme));
+    let emoji = "";
+    do {
+      const themeIndex = Math.floor(Math.random() * otherThemes.length);
+      const theme = otherThemes[themeIndex];
+      emoji = getRandomEmojiInTheme(theme);
+    } while (!powerEmojis.includes(emoji)); // Avoid inserting duplicates
+    powerEmojis.push(emoji);
   }
 
   const emojis = [
