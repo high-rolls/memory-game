@@ -29,7 +29,7 @@ export function createCardArray(
       const themeIndex = Math.floor(Math.random() * otherThemes.length);
       const theme = otherThemes[themeIndex];
       emoji = getRandomEmojiInTheme(theme);
-    } while (!powerEmojis.includes(emoji)); // Avoid inserting duplicates
+    } while (powerEmojis.includes(emoji)); // Avoid inserting duplicates
     powerEmojis.push(emoji);
   }
 
