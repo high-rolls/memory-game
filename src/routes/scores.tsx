@@ -11,7 +11,6 @@ export type Score = {
 
 const Scores = () => {
   const [scores] = useLocalStorage<Score[]>("scores", []);
-  console.log(scores);
 
   if (!scores.length) {
     return (
@@ -22,10 +21,10 @@ const Scores = () => {
   }
 
   return (
-    <div className="flex p-3 flex-col items-center gap-3">
+    <div className="flex p-3 pb-0 md:pb-3 flex-col h-full items-center gap-3">
       <h1 className="text-4xl font-bold text-primary-content">Top Scores</h1>
-      <div className="w-sm overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-        <table className="table">
+      <div className="w-sm md:w-lg overflow-x-auto overflow-y-scroll rounded-box border border-base-content/5 bg-base-100">
+        <table className="table table-pin-rows">
           {/* head */}
           <thead>
             <tr>

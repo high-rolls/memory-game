@@ -34,7 +34,6 @@ function StatusBar({
     const scoreHasChanged = score !== prevScore;
 
     if (gameState === "playing" && score > 0 && scoreHasChanged) {
-      console.log(gameState, score);
       descAnimation.start({
         scale: [1, 1.5, 1], // Scale up then down
         rotateX: ["90deg", "0deg", "-90deg"],
