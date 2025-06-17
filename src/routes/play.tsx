@@ -73,7 +73,7 @@ const Play = () => {
       playConfettiSound();
       setTimeout(() => playFanfareSound(), 500);
       navigator.vibrate(200);
-    }, 500);
+    }, 1500);
   }
 
   const markMatched = (ids: number[], updatedCards: CardData[]) => {
