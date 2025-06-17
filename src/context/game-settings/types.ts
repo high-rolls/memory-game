@@ -13,14 +13,12 @@ type GameSettings = {
   cardColor: CardColor;
   cardCount: CardCount;
   iconTheme: IconTheme;
-  icons: string[];
 };
 
 type GameSettingsActions = {
   setCardColor: (color: CardColor) => void;
   setCardCount: (count: CardCount) => void;
   setIconTheme: (theme: IconTheme) => void;
-  setIcons: (icons: string[]) => void;
 };
 
 export type { GameSettings, GameSettingsActions };

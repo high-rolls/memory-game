@@ -53,7 +53,7 @@ function StatusBar({
 
   return (
     <div className="stats shadow">
-      <div className="stat place-items-center">
+      <div className="stat p-0 place-items-center">
         {title && <div className="stat-title">{title}</div>}
         {value && <div className="stat-value text-lime-300">{value}</div>}
         {desc && <div className="stat-desc text-lime-300">{desc}</div>}

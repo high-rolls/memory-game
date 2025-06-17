@@ -7,6 +7,7 @@ import { useMemo } from "react";
 export interface IBoardProps {
   cards: CardData[];
   heightRatio: number;
+  heightOffset?: number;
   matchesAreVisible?: boolean;
   onCardClicked?: (card: CardData) => void;
 }
@@ -14,6 +15,7 @@ export interface IBoardProps {
 function Board({
   cards,
   heightRatio,
+  heightOffset = 0,
   matchesAreVisible = true,
   onCardClicked,
 }: IBoardProps) {
@@ -25,12 +27,12 @@ function Board({
   );
 
   const deviceAspectRatio = useMemo(
-    () => (windowSize.width > windowSize.height ? "landscape" : "portrait"),
+    () => windowSize.width / windowSize.height,
     [windowSize]
   );
 
-  const columns = deviceAspectRatio === "portrait" ? smallSide : largeSide;
-  const rows = deviceAspectRatio === "portrait" ? largeSide : smallSide;
+  const columns = deviceAspectRatio > 1 ? largeSide : smallSide;
+  const rows = deviceAspectRatio > 1 ? smallSide : largeSide;
 
   return (
     <div
@@ -39,7 +41,9 @@ function Board({
         gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
         gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
         aspectRatio: `${columns} / ${rows}`,
-        width: `min(100%, ${(heightRatio * 100 * columns) / rows}dvh)`,
+        width: `min(100%, ${
+          (heightRatio * 100 * columns) / rows
+        }dvh - ${heightOffset}px)`,
       }}
     >
       {cards.map((card) => (

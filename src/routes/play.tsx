@@ -4,11 +4,9 @@ import matchSfx from "@/assets/audio/match.ogg";
 import ActionBar from "@/components/action-bar";
 import Board from "@/components/board";
 import StatusBar from "@/components/status-bar";
-import { useGameSettingsFull, type IconTheme } from "@/context/game-settings";
+import { useGameSettingsFull } from "@/context/game-settings";
 import { createCardArray } from "@/lib/game";
-import { getRandomEmojisInTheme, themeEmojis } from "@/lib/themes";
 import type { CardData } from "@/lib/types";
-import { shuffleArray } from "@/lib/utils";
 import type { Score } from "@/routes/scores";
 import JSConfetti from "js-confetti";
 import { useEffect, useState } from "react";
@@ -20,10 +18,10 @@ export type GameState = "initial" | "displaying-cards" | "playing" | "win";
 const confetti = new JSConfetti();
 
 const Play = () => {
-  const { cardCount, iconTheme, icons, setIcons } = useGameSettingsFull();
+  const { cardCount, iconTheme } = useGameSettingsFull();
   const powerCardCount = Math.floor(cardCount / 12);
   const [cards, setCards] = useState<CardData[]>(
-    createCardArray(cardCount / 2, powerCardCount, false)
+    createCardArray(iconTheme, false, cardCount / 2, powerCardCount, true)
   );
   const [gameState, setGameState] = useState<GameState>("initial");
   const [score, setScore] = useState(0);
@@ -118,7 +116,7 @@ const Play = () => {
 
     const [a, b] = faceUp;
 
-    if (a.value === b.value) {
+    if (a.emoji === b.emoji) {
       markMatched([a.id, b.id], updatedCards);
     } else {
       resetUnmatched([a.id, b.id]);
@@ -152,27 +150,14 @@ const Play = () => {
   };
 
   const startGame = () => {
-    const otherThemes = Object.keys(themeEmojis).filter(
-      (k) => k !== iconTheme
-    ) as IconTheme[];
-    // Pick power icons randomly from other themes
-    const powerIcons = new Array(powerCardCount).fill("").map(() => {
-      const randomTheme =
-        otherThemes[Math.floor(Math.random() * otherThemes.length)];
-      return getRandomEmojisInTheme(randomTheme, 1)[0];
-    });
-
-    setIcons([
-      ...powerIcons,
-      ...getRandomEmojisInTheme(iconTheme, icons.length - powerCardCount),
-    ]);
-
-    const shuffled = shuffleArray(cards).map((card) => ({
-      ...card,
-      isMatched: false,
-      timesSeen: 0,
-    }));
-    setCards(shuffled);
+    const newCards = createCardArray(
+      iconTheme,
+      false,
+      cardCount / 2,
+      powerCardCount,
+      true
+    );
+    setCards(newCards);
     setScore(0);
     revealCards(cardCount * 0.2);
     setRevealAbilityCount(0);
@@ -197,7 +182,8 @@ const Play = () => {
       />
       <Board
         cards={cards}
-        heightRatio={0.7}
+        heightRatio={0.8}
+        heightOffset={120}
         matchesAreVisible={gameState !== "displaying-cards"}
         onCardClicked={handleCardClicked}
       />

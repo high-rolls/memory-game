@@ -1,21 +1,64 @@
+import type { IconTheme } from "@/context/game-settings";
 import type { CardData } from "@/lib/types";
+import {
+  getRandomEmojiInTheme,
+  getRandomEmojisInTheme,
+  themeEmojis,
+} from "./themes";
+import { shuffleArray } from "./utils";
 
 export function createCardArray(
+  iconTheme: IconTheme,
+  isFaceUp: boolean,
   numPairs: number,
   numPowerPairs: number,
-  isFaceUp: boolean
+  isShuffled: boolean = false
 ): CardData[] {
   if (numPairs <= 0) {
     throw new Error("Number of pairs must be a positive number.");
   }
 
-  const values = Array.from({ length: numPairs }, (_, i) => i);
-  return [...values, ...values].map((value, index) => ({
-    id: length * 100 + index,
-    value,
-    isFaceUp,
-    isMatched: false,
-    isPowerCard: value < numPowerPairs,
-    timesSeen: 0,
-  }));
+  const otherThemes = Object.keys(themeEmojis).filter(
+    (k) => k !== iconTheme
+  ) as IconTheme[];
+  // Pick power icons randomly from other themes
+  const powerEmojis = [];
+  for (let i = 0; i < numPowerPairs; i++) {
+    const randomThemeIndex = Math.floor(Math.random() * otherThemes.length);
+    const randomTheme = otherThemes[randomThemeIndex];
+    powerEmojis.push(getRandomEmojiInTheme(randomTheme));
+  }
+
+  const emojis = [
+    ...powerEmojis,
+    ...getRandomEmojisInTheme(iconTheme, numPairs - numPowerPairs),
+  ];
+  const cards = [];
+
+  for (let i = 0; i < numPairs; i++) {
+    const emoji = emojis[i];
+    const id1 = i * 2;
+    const id2 = i * 2 + 1;
+    const isPowerCard = i < numPowerPairs;
+    cards.push(
+      {
+        id: id1,
+        emoji,
+        isFaceUp,
+        isMatched: false,
+        isPowerCard,
+        timesSeen: 0,
+      },
+      {
+        id: id2,
+        emoji,
+        isFaceUp,
+        isMatched: false,
+        isPowerCard,
+        timesSeen: 0,
+      }
+    );
+  }
+
+  return isShuffled ? shuffleArray(cards) : cards;
 }

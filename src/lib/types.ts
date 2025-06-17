@@ -1,6 +1,6 @@
 export type CardData = {
   id: number;
-  value: number;
+  emoji: string;
   isFaceUp: boolean;
   isMatched: boolean;
   isPowerCard: boolean;

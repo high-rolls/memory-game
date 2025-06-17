@@ -1,46 +1,33 @@
-import { getEmojisForTheme } from "@/lib/themes";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { GameSettingsActionsContext, GameSettingsContext } from "./context";
-import type { CardColor, CardCount, IconTheme } from "./types";
-import { useSearchParams } from "react-router";
-import {
-  parseCardColor,
-  parseCardCount,
-  parseIconTheme,
-} from "@/lib/url-params";
+import type { CardColor, CardCount, GameSettings, IconTheme } from "./types";
+
+import { useLocalStorage } from "usehooks-ts";
 
 export function GameSettingsProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [searchParams] = useSearchParams();
-  const [cardCount, setCardCount] = useState<CardCount>(
-    parseCardCount(searchParams) ?? 36
-  );
-  const [iconTheme, setIconTheme] = useState<IconTheme>(
-    parseIconTheme(searchParams) ?? "animals"
-  );
-  const [cardColor, setCardColor] = useState<CardColor>(
-    parseCardColor(searchParams) ?? "amber"
-  );
-  const [icons, setIcons] = useState<string[]>(() =>
-    getEmojisForTheme(iconTheme, cardCount / 2)
-  );
-
-  const settings = useMemo(
-    () => ({ iconTheme, cardColor, cardCount, icons }),
-    [iconTheme, cardColor, cardCount, icons]
+  const [settings, setSettings] = useLocalStorage<GameSettings>(
+    "game-settings",
+    {
+      cardColor: "amber",
+      cardCount: 36,
+      iconTheme: "animals",
+    }
   );
 
   const actions = useMemo(
     () => ({
-      setCardColor,
-      setCardCount,
-      setIconTheme,
-      setIcons,
+      setCardColor: (cardColor: CardColor) =>
+        setSettings({ ...settings, cardColor }),
+      setCardCount: (cardCount: CardCount) =>
+        setSettings({ ...settings, cardCount }),
+      setIconTheme: (iconTheme: IconTheme) =>
+        setSettings({ ...settings, iconTheme }),
     }),
-    []
+    [settings, setSettings]
   );
 
   return (

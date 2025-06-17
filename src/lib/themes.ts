@@ -90,3 +90,9 @@ export function getRandomEmojisInTheme(theme: IconTheme, length: number) {
   const shuffled = shuffleArray(allEmojis);
   return shuffled.slice(0, length);
 }
+
+export function getRandomEmojiInTheme(theme: IconTheme) {
+  const allEmojis = getEmojisForTheme(theme);
+  const randomIndex = Math.floor(Math.random() * allEmojis.length);
+  return allEmojis[randomIndex];
+}

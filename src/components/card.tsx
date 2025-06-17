@@ -33,7 +33,7 @@ const colorThemes = {
 };
 
 const Card = ({
-  value,
+  emoji,
   isFaceUp,
   isMatched,
   isPowerCard,
@@ -42,9 +42,8 @@ const Card = ({
 }: CardProps) => {
   const [isFaceVisible, setIsFaceVisible] = useState(isFaceUp);
   const [fontSize, setFontSize] = useState(16);
-  const { cardColor, icons } = useGameSettings();
+  const { cardColor } = useGameSettings();
   const cardRef = useRef<HTMLDivElement>(null);
-  const emoji = icons[value];
   const controls = useAnimation();
 
   const { borderColor, bgColor, faceColor } = useMemo(() => {

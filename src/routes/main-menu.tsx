@@ -6,8 +6,7 @@ import {
   type IconTheme,
 } from "@/context/game-settings";
 import { createCardArray } from "@/lib/game";
-import { getRandomEmojisInTheme } from "@/lib/themes";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 const CARD_COUNT_MIN = 12;
 const CARD_COUNT_MAX = 84;
@@ -32,21 +31,13 @@ function MainMenu() {
     iconTheme,
     setCardColor,
     setCardCount,
-    setIcons,
     setIconTheme,
   } = useGameSettingsFull();
 
   // Create a separate card collection for each board size
   const cards = useMemo(
-    () => createCardArray(cardCount / 2, 0, true),
-    [cardCount]
-  );
-
-  // Display the card icons always in the same order in the menu,
-  // and memorize them based on the icon theme and card count.
-  useEffect(
-    () => setIcons(getRandomEmojisInTheme(iconTheme, cardCount / 2)),
-    [iconTheme, cardCount, setIcons]
+    () => createCardArray(iconTheme, true, cardCount / 2, 0, true),
+    [cardCount, iconTheme]
   );
 
   const handleCardColorChange = (value: string) => {
@@ -61,11 +52,6 @@ function MainMenu() {
   const handleIconThemeChange = (value: string) => {
     setIconTheme(value as IconTheme);
   };
-
-  const searchParams = new URLSearchParams();
-  searchParams.set("card-count", cardCount.toString());
-  searchParams.set("icon-theme", iconTheme);
-  searchParams.set("card-color", cardColor);
 
   return (
     <div className="hero bg-base-100 h-full">
