@@ -9,9 +9,11 @@ import { createCardArray } from "@/lib/game";
 import { getRandomEmojisInTheme, themeEmojis } from "@/lib/themes";
 import type { CardData } from "@/lib/types";
 import { shuffleArray } from "@/lib/utils";
+import type { Score } from "@/routes/scores";
 import JSConfetti from "js-confetti";
 import { useEffect, useState } from "react";
 import useSound from "use-sound";
+import { useLocalStorage } from "usehooks-ts";
 
 export type GameState = "initial" | "displaying-cards" | "playing" | "win";
 
@@ -26,6 +28,7 @@ const Play = () => {
   const [gameState, setGameState] = useState<GameState>("initial");
   const [score, setScore] = useState(0);
   const [scoreChange, setScoreChange] = useState(0);
+  const [scores, setScores] = useLocalStorage<Score[]>("scores", []);
   const [, setStateTimer] = useState(0);
   const [displaySeconds, setDisplaySeconds] = useState(0);
   const [revealAbilityCount, setRevealAbilityCount] = useState(0);
@@ -61,6 +64,13 @@ const Play = () => {
   if (gameState === "playing" && matchCount === cardCount / 2) {
     setTimeout(() => {
       setGameState("win");
+      const newScore = {
+        cardCount,
+        score: Math.floor(score),
+        iconTheme,
+        date: new Date(),
+      };
+      setScores([...scores, newScore]);
       confetti.addConfetti();
       playConfettiSound();
       setTimeout(() => playFanfareSound(), 500);

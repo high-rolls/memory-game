@@ -1,33 +1,59 @@
 // src/routes/MemoryGameLayout.tsx
 import { Link, NavLink, Outlet } from "react-router";
 import { GameSettingsProvider } from "@/context/game-settings";
-import { GamepadIcon, SettingsIcon } from "lucide-react";
+import { GamepadIcon, MedalIcon, PlayIcon, SettingsIcon } from "lucide-react";
 
 export default function MemoryGameLayout() {
   return (
     <GameSettingsProvider>
       <div className="hidden md:navbar bg-base-100 shadow-sm">
         <div className="navbar-start">
-          <Link to="/play" className="btn btn-ghost text-xl">
+          <Link to="/" className="btn btn-ghost text-xl">
             memoji
           </Link>
         </div>
-        <div className="navbar-end">
-          <ul className="menu menu-horizontal px-1">
+        <div className="navbar-center">
+          <ul className="menu menu-horizontal gap-1 px-1">
             <li>
-              <Link to="/">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive ? "menu-active" : undefined
+                }
+              >
+                <PlayIcon size={16} /> Play
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/scores"
+                className={({ isActive }) =>
+                  isActive ? "menu-active" : undefined
+                }
+              >
+                <MedalIcon size={16} /> Scores
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/settings"
+                className={({ isActive }) =>
+                  isActive ? "menu-active" : undefined
+                }
+              >
                 <SettingsIcon size={16} /> Settings
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </div>
+        <div className="navbar-end"></div>
       </div>
       <div className="fixed top-0 md:top-16 right-0 bottom-12 md:bottom-0 left-0">
         <Outlet />
       </div>
       <div className="dock dock-xs md:hidden">
         <NavLink
-          to="/play"
+          to="/"
           className={({ isActive }) => (isActive ? "dock-active" : undefined)}
         >
           <GamepadIcon size={20} />
@@ -35,7 +61,15 @@ export default function MemoryGameLayout() {
         </NavLink>
 
         <NavLink
-          to="/"
+          to="/scores"
+          className={({ isActive }) => (isActive ? "dock-active" : undefined)}
+        >
+          <MedalIcon size={20} />
+          <span className="dock-label">Scores</span>
+        </NavLink>
+
+        <NavLink
+          to="/settings"
           className={({ isActive }) => (isActive ? "dock-active" : undefined)}
         >
           <SettingsIcon size={20} />

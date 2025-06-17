@@ -64,6 +64,16 @@ export const themeEmojis: Record<IconTheme, string[]> = {
   ),
 };
 
+export const THEME_NAMES: Record<IconTheme, string> = {
+  activities: "Activities",
+  animals: "Animals",
+  flags: "Flags",
+  "food-and-drink": "Food & Drink",
+  objects: "Objects",
+  "people-and-body": "People & Body",
+  "smileys-and-emotion": "Smileys & Emotion",
+};
+
 export function getEmojisForTheme(theme: IconTheme, length?: number) {
   const emojis = themeEmojis[theme] || themeEmojis.animals;
   if (length) return emojis.slice(0, length);
