@@ -25,6 +25,7 @@ const Play = () => {
   );
   const [gameState, setGameState] = useState<GameState>("initial");
   const [score, setScore] = useState(0);
+  const [scoreChange, setScoreChange] = useState(0);
   const [, setStateTimer] = useState(0);
   const [displaySeconds, setDisplaySeconds] = useState(0);
   const [revealAbilityCount, setRevealAbilityCount] = useState(0);
@@ -79,6 +80,7 @@ const Play = () => {
       updatedCards.find((card) => card.id === ids[0])?.isPowerCard ?? false;
     if (isPowerPair) setRevealAbilityCount((prev) => prev + 1);
     setScore((prev) => prev + matchScore);
+    setScoreChange(matchScore);
     setCards((prev) =>
       prev.map((card) =>
         ids.includes(card.id) ? { ...card, isMatched: true } : card
@@ -178,9 +180,10 @@ const Play = () => {
       }`}
     >
       <StatusBar
+        displaySeconds={displaySeconds}
         gameState={gameState}
         score={score}
-        displaySeconds={displaySeconds}
+        scoreChange={scoreChange}
       />
       <Board
         cards={cards}

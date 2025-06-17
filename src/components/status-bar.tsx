@@ -2,12 +2,18 @@ import type { GameState } from "@/routes/play";
 import { useEffect, useRef } from "react";
 
 export interface IStatusBarProps {
+  displaySeconds: number;
   gameState: GameState;
   score: number;
-  displaySeconds: number;
+  scoreChange: number;
 }
 
-function StatusBar({ gameState, score, displaySeconds }: IStatusBarProps) {
+function StatusBar({
+  displaySeconds,
+  gameState,
+  score,
+  scoreChange,
+}: IStatusBarProps) {
   const countdownRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -19,42 +25,39 @@ function StatusBar({ gameState, score, displaySeconds }: IStatusBarProps) {
   }, [displaySeconds]);
 
   let title;
-  let subtitle;
+  let value;
+  let desc;
   switch (gameState) {
     case "initial":
       title = "Press Play to start";
       break;
     case "displaying-cards":
-      title = (
-        <>
-          {"Get Ready... "}
-          <span className="countdown">
-            <span aria-live="polite" ref={countdownRef}></span>
-          </span>
-        </>
+      title = "Get Ready... ";
+      value = (
+        <span className="countdown">
+          <span aria-live="polite" ref={countdownRef}></span>
+        </span>
       );
       break;
     case "playing":
-      title = `Score: ${Math.floor(score)}`;
+      title = "Score";
+      value = Math.floor(score).toString();
+      if (scoreChange > 0) desc = `↗︎ ${Math.floor(scoreChange)}`;
       break;
     case "win":
       title = "You've won!";
-      subtitle = (
-        <span>
-          Score: <span className="font-bold">{Math.floor(score)}</span>
-        </span>
-      );
+      value = Math.floor(score).toString();
+      desc = "Final Score";
       break;
   }
 
   return (
-    <div className="flex flex-col md:flex-row w-full justify-center md:justify-evenly items-baseline">
-      <h1 className="text-3xl sm:text-5xl font-bold text-base-content">
-        {title}
-      </h1>
-      {subtitle && (
-        <h2 className="text-2xl sm:text-3xl text-base-content">{subtitle}</h2>
-      )}
+    <div className="stats shadow">
+      <div className="stat place-items-center">
+        {title && <div className="stat-title">{title}</div>}
+        {value && <div className="stat-value text-lime-300">{value}</div>}
+        {desc && <div className="stat-desc text-lime-300">{desc}</div>}
+      </div>
     </div>
   );
 }
