@@ -182,8 +182,6 @@ const Play = () => {
       />
       <Board
         cards={cards}
-        heightRatio={0.8}
-        heightOffset={120}
         matchesAreVisible={gameState !== "displaying-cards"}
         onCardClicked={handleCardClicked}
       />

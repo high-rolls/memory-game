@@ -47,10 +47,10 @@ const ICON_THEMES = [
 
 const Scores = () => {
   const [scores] = useLocalStorage<Score[]>("scores", []);
-  const [selectedCardCount, setSelectedCardCount] = useState<CardCount>(12);
-  const [selectedIconTheme, setSelectedIconTheme] = useState<
-    IconTheme | "all"
-  >("all");
+  const [selectedCardCount, setSelectedCardCount] = useState<CardCount>(0);
+  const [selectedIconTheme, setSelectedIconTheme] = useState<IconTheme | "all">(
+    "all"
+  );
 
   const onCardCountRadioChange = (event: FormEvent<HTMLDivElement>) => {
     const input = event.target as HTMLInputElement;
@@ -78,8 +78,8 @@ const Scores = () => {
   return (
     <div className="flex p-3 pb-0 md:pb-3 flex-col h-full items-center gap-3">
       <h1 className="text-4xl font-bold text-primary-content">Top Scores</h1>
-      {displayedScores.length > 0 ? (
-        <div className="w-sm md:w-lg overflow-x-auto overflow-y-scroll rounded-box border border-base-content/5 bg-base-100">
+      <div className="w-sm md:w-lg flex-1 overflow-x-auto overflow-y-scroll rounded-box border border-base-content/5 bg-base-100">
+        {displayedScores.length > 0 ? (
           <table className="table table-pin-rows">
             {/* head */}
             <thead>
@@ -114,12 +114,12 @@ const Scores = () => {
                 })}
             </tbody>
           </table>
-        </div>
-      ) : (
-        <h1>No Scores</h1>
-      )}
+        ) : (
+          <h1 className="text-center my-3 font-bold text-base-content/60">No Scores</h1>
+        )}
+      </div>
 
-      <div className="absolute bottom-0 flex flex-col items-center">
+      <div className="flex flex-col items-center">
         <h2 className="text-lg font-bold text-base-content">Emoji Theme</h2>
         <div
           className="tabs tabs-box tabs-sm sm:tabs-md bg-base-300 mt-1 mb-1 inline-flex flex-nowrap"

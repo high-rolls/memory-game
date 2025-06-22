@@ -86,7 +86,7 @@ function StatusBar({
   }
 
   return (
-    <div className="stats shadow">
+    <div className="min-h-24 stats shadow">
       <div className="stat p-0 px-6 h-full overflow-clip place-items-center">
         {title && <div className="stat-title">{title}</div>}
         <motion.div
