@@ -1,9 +1,24 @@
 // src/routes/MemoryGameLayout.tsx
 import { Link, NavLink, Outlet } from "react-router";
 import { GameSettingsProvider } from "@/context/game-settings";
-import { GamepadIcon, MedalIcon, PlayIcon, SettingsIcon } from "lucide-react";
+import {
+  FullscreenIcon,
+  GamepadIcon,
+  MedalIcon,
+  PlayIcon,
+  SettingsIcon,
+} from "lucide-react";
 
 export default function MemoryGameLayout() {
+  
+  const handleFullscreenButtonClick = async () => {
+    if (document.fullscreenElement) {
+      await document.exitFullscreen();
+    } else {
+      await document.documentElement.requestFullscreen();
+    }
+  }
+
   return (
     <GameSettingsProvider>
       <div className="hidden md:navbar bg-base-100 shadow-sm">
@@ -75,6 +90,12 @@ export default function MemoryGameLayout() {
           <SettingsIcon size={20} />
           <span className="dock-label">Settings</span>
         </NavLink>
+      </div>
+      <div className="fixed top-0 right-0">
+        <button className="btn btn-ghost btn-square text-base-content"
+         onClick={handleFullscreenButtonClick}>
+          <FullscreenIcon size={20} />
+        </button>
       </div>
     </GameSettingsProvider>
   );
