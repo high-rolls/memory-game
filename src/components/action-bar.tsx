@@ -31,12 +31,12 @@ const ActionBar = ({
 
   return (
     <div className="flex flex-row gap-2">
-      {gameState === "initial" && (
+      {(gameState === "initial" || gameState === "win") && (
         <button
           className="btn btn-lg btn-success"
           onClick={onNewGameButtonClick}
         >
-          <PlayIcon size={16} /> Play
+          <PlayIcon size={16} /> Play{gameState === "win" && " Again"}
         </button>
       )}
       {(gameState === "playing" || gameState === "displaying-cards") && (
