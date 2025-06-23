@@ -77,7 +77,7 @@ const Scores = () => {
 
   return (
     <div className="flex p-3 pb-0 md:pb-3 flex-col h-full items-center gap-3">
-      <h1 className="text-4xl font-bold text-primary-content">Top Scores</h1>
+      <h1 className="text-4xl font-bold text-base-content">Top Scores</h1>
       <div className="w-sm md:w-lg flex-1 overflow-x-auto overflow-y-scroll rounded-box border border-base-content/5 bg-base-100">
         {displayedScores.length > 0 ? (
           <table className="table table-pin-rows">

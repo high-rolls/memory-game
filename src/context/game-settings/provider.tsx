@@ -15,6 +15,7 @@ export function GameSettingsProvider({
       cardColor: "amber",
       cardCount: 36,
       iconTheme: "animals",
+      soundVolume: 1,
     }
   );
 
@@ -26,6 +27,8 @@ export function GameSettingsProvider({
         setSettings({ ...settings, cardCount }),
       setIconTheme: (iconTheme: IconTheme) =>
         setSettings({ ...settings, iconTheme }),
+      setSoundVolume: (soundVolume: number) =>
+        setSettings({ ...settings, soundVolume })
     }),
     [settings, setSettings]
   );

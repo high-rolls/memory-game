@@ -18,7 +18,7 @@ export type GameState = "initial" | "displaying-cards" | "playing" | "win";
 const confetti = new JSConfetti();
 
 const Play = () => {
-  const { cardCount, iconTheme } = useGameSettingsFull();
+  const { cardCount, iconTheme, soundVolume } = useGameSettingsFull();
   const powerCardCount = Math.floor(cardCount / 12);
   const [cards, setCards] = useState<CardData[]>(
     createCardArray(iconTheme, false, cardCount / 2, powerCardCount, true)
@@ -31,9 +31,9 @@ const Play = () => {
   const [displaySeconds, setDisplaySeconds] = useState(0);
   const [revealAbilityCount, setRevealAbilityCount] = useState(0);
 
-  const [playMatchSound] = useSound(matchSfx);
-  const [playConfettiSound] = useSound(confettiSfx);
-  const [playFanfareSound] = useSound(fanfareSfx);
+  const [playMatchSound] = useSound(matchSfx, { volume: soundVolume });
+  const [playConfettiSound] = useSound(confettiSfx, { volume: soundVolume });
+  const [playFanfareSound] = useSound(fanfareSfx, { volume: soundVolume });
 
   useEffect(() => {
     if (gameState !== "displaying-cards") return;
@@ -171,7 +171,7 @@ const Play = () => {
   return (
     <div
       className={`flex flex-col justify-evenly items-center gap-3 h-full p-3 ${
-        gameState === "win" ? "bg-emerald-950" : "bg-base-200"
+        gameState === "win" ? "bg-success/25" : "bg-base-100"
       }`}
     >
       <StatusBar
@@ -182,7 +182,7 @@ const Play = () => {
       />
       <Board
         cards={cards}
-        matchesAreVisible={gameState !== "displaying-cards"}
+        hideMatchedCards={["playing", "displaying-cards"].includes(gameState)}
         onCardClicked={handleCardClicked}
       />
       <ActionBar

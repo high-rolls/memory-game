@@ -10,25 +10,25 @@ import {
 } from "react";
 
 type CardProps = CardData & {
-  isVisible: boolean;
+  hideMatched: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
 const colorThemes = {
   amber: {
+    backColor: "from-amber-500 to-amber-600",
     borderColor: "border-amber-700",
-    bgColor: "from-amber-500 to-amber-600",
-    faceColor: "#fde68a",
+    faceColor: "bg-amber-200",
   },
   emerald: {
+    backColor: "from-emerald-500 to-emerald-600",
     borderColor: "border-emerald-700",
-    bgColor: "from-emerald-500 to-emerald-600",
-    faceColor: "#a7f3d0",
+    faceColor: "bg-emerald-200",
   },
   purple: {
+    backColor: "from-purple-500 to-purple-600",
     borderColor: "border-purple-700",
-    bgColor: "from-purple-500 to-purple-600",
-    faceColor: "#e9d5ff",
+    faceColor: "bg-purple-200",
   },
 };
 
@@ -37,7 +37,7 @@ const Card = ({
   isFaceUp,
   isMatched,
   isPowerCard,
-  isVisible,
+  hideMatched,
   onClick,
 }: CardProps) => {
   const [isFaceVisible, setIsFaceVisible] = useState(isFaceUp);
@@ -46,11 +46,19 @@ const Card = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
 
-  const { borderColor, bgColor, faceColor } = useMemo(() => {
+  const { borderColor, backColor, faceColor } = useMemo(() => {
     if (isMatched && isPowerCard)
-      return { ...colorThemes[cardColor], borderColor: "border-teal-200" };
+      return {
+        ...colorThemes[cardColor],
+        faceColor: "bg-info",
+        borderColor: "border-info",
+      };
     return colorThemes[cardColor];
   }, [cardColor, isMatched, isPowerCard]);
+
+  // Transition immediately when not hiding matched
+  const transitionOpacity = hideMatched ? "transition-opacity delay-600 duration-300" : "";
+  const opacity = isMatched && hideMatched ? "opacity-25" : "opacity-100";
 
   // Scales the emoji font size based on the dynamic viewport height
   useEffect(() => {
@@ -75,10 +83,7 @@ const Card = ({
   }, [controls, isMatched, isFaceVisible]);
 
   return (
-    <div
-      className="perspective aspect-square w-full h-full"
-      style={{ fontSize: fontSize, opacity: isVisible ? 1 : 0.2 }}
-    >
+    <div className={`perspective aspect-square w-full h-full ${transitionOpacity} ${opacity}`}>
       <button onClick={onClick} className="relative w-full h-full">
         <motion.div
           className="relative w-full h-full preserve-3d"
@@ -95,23 +100,20 @@ const Card = ({
           {/* Front Face */}
           <motion.div
             ref={cardRef}
-            className={`card-face backface-hidden ${borderColor}`}
-            animate={{
-              backgroundColor: isMatched
-                ? isPowerCard
-                  ? "#06b6d4"
-                  : "#bbf451"
-                : faceColor,
-            }}
+            className={`card-face backface-hidden ${faceColor} ${borderColor}`}
           >
-            <motion.span animate={controls} initial={{ scale: 1 }}>
+            <motion.span
+              animate={controls}
+              initial={{ scale: 1 }}
+              style={{ fontSize: fontSize }}
+            >
               {isFaceVisible && emoji}
             </motion.span>
           </motion.div>
 
           {/* Back Face */}
           <div
-            className={`card-face rotate-y-180 backface-hidden ${borderColor} bg-gradient-to-br ${bgColor}`}
+            className={`card-face rotate-y-180 backface-hidden bg-linear-to-br ${backColor} ${borderColor}`}
           />
         </motion.div>
       </button>

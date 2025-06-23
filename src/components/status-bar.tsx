@@ -58,15 +58,13 @@ function StatusBar({
     prevScoreRef.current = score;
   }, [descAnimation, valueAnimation, gameState, score]);
 
-  let title;
   let value;
   let desc;
+
   switch (gameState) {
     case "initial":
-      title = "Press Play to start";
       break;
     case "displaying-cards":
-      title = "Get Ready... ";
       value = (
         <span className="countdown">
           <span aria-live="polite" ref={countdownRef}></span>
@@ -74,28 +72,25 @@ function StatusBar({
       );
       break;
     case "playing":
-      title = "Score";
       value = Math.floor(displayScore).toString();
       desc = scoreChange > 0 ? `+${Math.floor(scoreChange)}` : "";
       break;
     case "win":
-      title = "You've won!";
       value = Math.floor(score).toString();
       desc = "Final Score";
       break;
   }
 
   return (
-    <div className="min-h-24 stats shadow">
+    <div className="min-h-17 stats">
       <div className="stat p-0 px-6 h-full overflow-clip place-items-center">
-        {title && <div className="stat-title">{title}</div>}
         <motion.div
-          className="stat-value text-lime-300"
+          className="stat-value text-base-content"
           animate={valueAnimation}
         >
           {value}
         </motion.div>
-        <motion.div className="stat-desc text-lime-300" animate={descAnimation}>
+        <motion.div className="stat-desc text-success" animate={descAnimation}>
           {desc}
         </motion.div>
       </div>

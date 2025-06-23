@@ -6,13 +6,13 @@ import { useMemo, useRef } from "react";
 
 export interface IBoardProps {
   cards: CardData[];
-  matchesAreVisible?: boolean;
+  hideMatchedCards: boolean;
   onCardClicked?: (card: CardData) => void;
 }
 
 function Board({
   cards,
-  matchesAreVisible = true,
+  hideMatchedCards,
   onCardClicked,
 }: IBoardProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -52,7 +52,7 @@ function Board({
               <Card
                 {...card}
                 key={card.id}
-                isVisible={card.isMatched ? matchesAreVisible : true}
+                hideMatched={hideMatchedCards}
                 onClick={onCardClicked ? () => onCardClicked(card) : undefined}
               />
             ))}

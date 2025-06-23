@@ -1,27 +1,13 @@
 // src/routes/MemoryGameLayout.tsx
 import { Link, NavLink, Outlet } from "react-router";
 import { GameSettingsProvider } from "@/context/game-settings";
-import {
-  FullscreenIcon,
-  GamepadIcon,
-  MedalIcon,
-  PlayIcon,
-  SettingsIcon,
-} from "lucide-react";
+import { GamepadIcon, MedalIcon, PlayIcon, SettingsIcon } from "lucide-react";
+import { GlobalToolBar } from "@/components/global-tool-bar";
 
 export default function MemoryGameLayout() {
-  
-  const handleFullscreenButtonClick = async () => {
-    if (document.fullscreenElement) {
-      await document.exitFullscreen();
-    } else {
-      await document.documentElement.requestFullscreen();
-    }
-  }
-
   return (
     <GameSettingsProvider>
-      <div className="hidden md:navbar bg-base-100 shadow-sm">
+      <div className="hidden md:navbar bg-base-200 shadow-sm">
         <div className="navbar-start">
           <Link to="/" className="btn btn-ghost text-xl">
             memoji
@@ -66,7 +52,7 @@ export default function MemoryGameLayout() {
       <div className="fixed top-0 md:top-16 right-0 bottom-12 md:bottom-0 left-0">
         <Outlet />
       </div>
-      <div className="dock dock-xs md:hidden">
+      <div className="dock dock-xs md:hidden bg-base-200">
         <NavLink
           to="/"
           className={({ isActive }) => (isActive ? "dock-active" : undefined)}
@@ -92,10 +78,7 @@ export default function MemoryGameLayout() {
         </NavLink>
       </div>
       <div className="fixed top-0 right-0">
-        <button className="btn btn-ghost btn-square text-base-content"
-         onClick={handleFullscreenButtonClick}>
-          <FullscreenIcon size={20} />
-        </button>
+        <GlobalToolBar />
       </div>
     </GameSettingsProvider>
   );
