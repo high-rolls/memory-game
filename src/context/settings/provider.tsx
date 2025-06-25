@@ -1,15 +1,15 @@
 import { useMemo } from "react";
-import { GameSettingsActionsContext, GameSettingsContext } from "./context";
-import type { CardColor, GameSettings, IconTheme } from "./types";
+import { SettingsActionsContext, SettingsContext } from "./context";
+import type { CardColor, Settings, IconTheme } from "./types";
 
 import { useLocalStorage } from "usehooks-ts";
 
-export function GameSettingsProvider({
+export function SettingsProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [settings, setSettings] = useLocalStorage<GameSettings>(
+  const [settings, setSettings] = useLocalStorage<Settings>(
     "game-settings",
     {
       cardColor: "amber",
@@ -31,10 +31,10 @@ export function GameSettingsProvider({
   );
 
   return (
-    <GameSettingsActionsContext.Provider value={actions}>
-      <GameSettingsContext.Provider value={settings}>
+    <SettingsActionsContext.Provider value={actions}>
+      <SettingsContext.Provider value={settings}>
         {children}
-      </GameSettingsContext.Provider>
-    </GameSettingsActionsContext.Provider>
+      </SettingsContext.Provider>
+    </SettingsActionsContext.Provider>
   );
 }

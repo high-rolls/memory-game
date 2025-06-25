@@ -1,4 +1,4 @@
-import { useGameSettingsFull } from "@/context/game-settings";
+import { useSettingsFull } from "@/context/settings";
 import { FullscreenIcon, Volume1, Volume2, VolumeX } from "lucide-react";
 import { useState } from "react";
 
@@ -9,7 +9,7 @@ const VOLUME_LEVELS = [
 ];
 
 export function GlobalToolBar() {
-  const { soundVolume, setSoundVolume } = useGameSettingsFull();
+  const { soundVolume, setSoundVolume } = useSettingsFull();
   const [volumeLevelIndex, setVolumeLevelIndex] = useState(Math.round(soundVolume * 2));
 
   console.log(volumeLevelIndex);

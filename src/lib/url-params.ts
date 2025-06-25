@@ -1,4 +1,4 @@
-import type { CardColor, IconTheme } from "@/context/game-settings";
+import type { CardColor, IconTheme } from "@/context/settings";
 
 export function parseIconTheme(
   searchParams: URLSearchParams

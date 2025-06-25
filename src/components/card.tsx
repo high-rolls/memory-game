@@ -1,4 +1,4 @@
-import { useGameSettings } from "@/context/game-settings";
+import { useSettings } from "@/context/settings";
 import type { CardData } from "@/lib/types";
 import { motion, useAnimation } from "framer-motion";
 import {
@@ -42,7 +42,7 @@ const Card = ({
 }: CardProps) => {
   const [isFaceVisible, setIsFaceVisible] = useState(isFaceUp);
   const [fontSize, setFontSize] = useState(16);
-  const { cardColor } = useGameSettings();
+  const { cardColor } = useSettings();
   const cardRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
 

@@ -1,11 +1,11 @@
 import { Link, NavLink, Outlet } from "react-router";
-import { GameSettingsProvider } from "@/context/game-settings";
+import { SettingsProvider } from "@/context/settings";
 import { GamepadIcon, MedalIcon, PlayIcon, SettingsIcon } from "lucide-react";
 import { GlobalToolBar } from "@/components/global-tool-bar";
 
 export default function RootLayout() {
   return (
-    <GameSettingsProvider>
+    <SettingsProvider>
       <div className="hidden md:navbar bg-base-200 shadow-sm">
         <div className="navbar-start">
           <Link to="/" className="btn btn-ghost text-xl">
@@ -79,6 +79,6 @@ export default function RootLayout() {
       <div className="fixed top-0 right-0">
         <GlobalToolBar />
       </div>
-    </GameSettingsProvider>
+    </SettingsProvider>
   );
 }

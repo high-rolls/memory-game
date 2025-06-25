@@ -8,16 +8,16 @@ export type IconTheme =
   | "people-and-body"
   | "smileys-and-emotion";
 
-type GameSettings = {
+type Settings = {
   cardColor: CardColor;
   iconTheme: IconTheme;
   soundVolume: number;
 };
 
-type GameSettingsActions = {
+type SettingsActions = {
   setCardColor: (color: CardColor) => void;
   setIconTheme: (theme: IconTheme) => void;
   setSoundVolume: (volume: number) => void;
 };
 
-export type { GameSettings, GameSettingsActions };
+export type { Settings, SettingsActions };

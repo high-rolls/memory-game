@@ -1,8 +1,8 @@
 import {
-  useGameSettingsFull,
+  useSettingsFull,
   type CardColor,
   type IconTheme,
-} from "@/context/game-settings";
+} from "@/context/settings";
 
 const colorClass = {
   amber: "bg-amber-600",
@@ -16,7 +16,7 @@ function MainMenu() {
     iconTheme,
     setCardColor,
     setIconTheme,
-  } = useGameSettingsFull();
+  } = useSettingsFull();
 
   const handleCardColorChange = (value: string) => {
     setCardColor(value as CardColor);
