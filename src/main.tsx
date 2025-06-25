@@ -1,6 +1,6 @@
 import MainMenu from "@/routes/main-menu";
-import MemoryGameLayout from "@/routes/memory-game-layout";
 import Play from "@/routes/play";
+import RootLayout from "@/routes/root-layout";
 import Scores from "@/routes/scores";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
@@ -12,7 +12,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Router>
       <Routes>
-        <Route element={<MemoryGameLayout />}>
+        <Route element={<RootLayout />}>
           <Route index element={<LevelSelect />} />
           <Route path="play/:cardCountParam" element={<Play />} />
           <Route path="settings" element={<MainMenu />} />

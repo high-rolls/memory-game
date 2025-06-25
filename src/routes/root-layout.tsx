@@ -1,10 +1,9 @@
-// src/routes/MemoryGameLayout.tsx
 import { Link, NavLink, Outlet } from "react-router";
 import { GameSettingsProvider } from "@/context/game-settings";
 import { GamepadIcon, MedalIcon, PlayIcon, SettingsIcon } from "lucide-react";
 import { GlobalToolBar } from "@/components/global-tool-bar";
 
-export default function MemoryGameLayout() {
+export default function RootLayout() {
   return (
     <GameSettingsProvider>
       <div className="hidden md:navbar bg-base-200 shadow-sm">
