@@ -4,4 +4,4 @@ export {
   useGameSettingsActions,
   useGameSettingsFull,
 } from "./hooks";
-export type { CardColor, CardCount, IconTheme } from "./types";
+export type { CardColor, IconTheme } from "./types";

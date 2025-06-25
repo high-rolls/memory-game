@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { GameSettingsActionsContext, GameSettingsContext } from "./context";
-import type { CardColor, CardCount, GameSettings, IconTheme } from "./types";
+import type { CardColor, GameSettings, IconTheme } from "./types";
 
 import { useLocalStorage } from "usehooks-ts";
 
@@ -13,7 +13,6 @@ export function GameSettingsProvider({
     "game-settings",
     {
       cardColor: "amber",
-      cardCount: 36,
       iconTheme: "animals",
       soundVolume: 1,
     }
@@ -23,8 +22,6 @@ export function GameSettingsProvider({
     () => ({
       setCardColor: (cardColor: CardColor) =>
         setSettings({ ...settings, cardColor }),
-      setCardCount: (cardCount: CardCount) =>
-        setSettings({ ...settings, cardCount }),
       setIconTheme: (iconTheme: IconTheme) =>
         setSettings({ ...settings, iconTheme }),
       setSoundVolume: (soundVolume: number) =>

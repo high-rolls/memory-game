@@ -1,5 +1,6 @@
-import type { CardCount, IconTheme } from "@/context/game-settings";
+import type { IconTheme } from "@/context/game-settings";
 import { THEME_NAMES } from "@/lib/themes";
+import type { CardCount } from "@/lib/types";
 import { useState, type FormEvent } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
