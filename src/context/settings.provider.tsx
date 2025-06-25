@@ -1,35 +1,44 @@
+import { useEffect, useReducer } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import {
-  SettingsActionsContext,
+  defaultSettings,
   SettingsContext,
-  type CardColor,
-  type IconTheme,
+  SettingsDispatchContext,
   type Settings,
+  type SettingsAction,
 } from "./settings.context";
-import { useMemo } from "react";
+
+function reducer(state: Settings, action: SettingsAction): Settings {
+  switch (action.type) {
+    case "set_card_color":
+      return { ...state, cardColor: action.payload };
+    case "set_icon_theme":
+      return { ...state, iconTheme: action.payload };
+    case "set_sound_volume":
+      return { ...state, soundVolume: action.payload };
+    default:
+      return state;
+  }
+}
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
-  const [settings, setSettings] = useLocalStorage<Settings>("game-settings", {
-    cardColor: "amber",
-    iconTheme: "animals",
-    soundVolume: 1,
-  });
-
-  const actions = useMemo(
-    () => ({
-      setCardColor: (cardColor: CardColor) =>
-        setSettings({ ...settings, cardColor }),
-      setIconTheme: (iconTheme: IconTheme) =>
-        setSettings({ ...settings, iconTheme }),
-      setSoundVolume: (soundVolume: number) =>
-        setSettings({ ...settings, soundVolume }),
-    }),
-    [settings, setSettings]
+  const [persisted, setPersisted] = useLocalStorage<Settings>(
+    "settings",
+    defaultSettings
   );
 
+  const [state, dispatch] = useReducer(reducer, persisted);
+
+  // Persist to localStorage on changes
+  useEffect(() => {
+    setPersisted(state);
+  }, [state, setPersisted]);
+
   return (
-    <SettingsActionsContext value={actions}>
-      <SettingsContext value={settings}>{children}</SettingsContext>
-    </SettingsActionsContext>
+    <SettingsContext value={state}>
+      <SettingsDispatchContext value={dispatch}>
+        {children}
+      </SettingsDispatchContext>
+    </SettingsContext>
   );
 }

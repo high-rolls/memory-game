@@ -4,7 +4,7 @@ import matchSfx from "@/assets/audio/match.ogg";
 import ActionBar from "@/components/action-bar";
 import Board from "@/components/board";
 import StatusBar from "@/components/status-bar";
-import { useSettingsFull } from "@/context/settings.context";
+import { useSettings } from "@/context/settings.context";
 import { createCardArray } from "@/lib/game";
 import type { CardData } from "@/lib/types";
 import type { Score } from "@/routes/scores";
@@ -19,7 +19,7 @@ export type GameState = "initial" | "displaying-cards" | "playing" | "win";
 const confetti = new JSConfetti();
 
 const Play = () => {
-  const { iconTheme, soundVolume } = useSettingsFull();
+  const { iconTheme, soundVolume } = useSettings();
   const { cardCountParam } = useParams();
   const cardCount = cardCountParam ? parseInt(cardCountParam) : 12;
   const powerCardCount = Math.floor(cardCount / 12);

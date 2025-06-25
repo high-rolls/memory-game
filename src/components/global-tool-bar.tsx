@@ -1,4 +1,4 @@
-import { useSettingsFull } from "@/context/settings.context";
+import { useSettings, useSettingsDispatch } from "@/context/settings.context";
 import { FullscreenIcon, Volume1, Volume2, VolumeX } from "lucide-react";
 import { useState } from "react";
 
@@ -9,8 +9,11 @@ const VOLUME_LEVELS = [
 ];
 
 export function GlobalToolBar() {
-  const { soundVolume, setSoundVolume } = useSettingsFull();
-  const [volumeLevelIndex, setVolumeLevelIndex] = useState(Math.round(soundVolume * 2));
+  const { soundVolume } = useSettings();
+  const dispatch = useSettingsDispatch();
+  const [volumeLevelIndex, setVolumeLevelIndex] = useState(
+    Math.round(soundVolume * 2)
+  );
 
   const handleFullscreenButtonClick = async () => {
     if (document.fullscreenElement) {
@@ -23,7 +26,8 @@ export function GlobalToolBar() {
   const handleSoundButtonClick = () => {
     const newVolumeLevelIndex = (volumeLevelIndex + 1) % VOLUME_LEVELS.length;
     setVolumeLevelIndex(newVolumeLevelIndex);
-    setSoundVolume(VOLUME_LEVELS[newVolumeLevelIndex].volume);
+    const newVolume = VOLUME_LEVELS[newVolumeLevelIndex].volume;
+    dispatch({ type: "set_sound_volume", payload: newVolume });
   };
   return (
     <div className="flex gap-1 m-3 bg-base-200/50 rounded-md">

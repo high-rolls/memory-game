@@ -1,5 +1,6 @@
 import {
-  useSettingsFull,
+  useSettings,
+  useSettingsDispatch,
   type CardColor,
   type IconTheme,
 } from "@/context/settings.context";
@@ -14,16 +15,18 @@ function Settings() {
   const {
     cardColor,
     iconTheme,
-    setCardColor,
-    setIconTheme,
-  } = useSettingsFull();
+  } = useSettings();
+
+  const dispatch = useSettingsDispatch();
 
   const handleCardColorChange = (value: string) => {
-    setCardColor(value as CardColor);
+    const cardColor = value as CardColor;
+    dispatch({ type: "set_card_color", payload: cardColor});
   };
 
   const handleIconThemeChange = (value: string) => {
-    setIconTheme(value as IconTheme);
+    const iconTheme = value as IconTheme;
+    dispatch({ type: "set_icon_theme", payload: iconTheme });
   };
 
   return (

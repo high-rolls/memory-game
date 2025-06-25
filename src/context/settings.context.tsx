@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, type Dispatch } from "react";
 import { useContext } from "react";
 
 export type CardColor = "amber" | "emerald" | "purple";
@@ -17,30 +17,30 @@ export type Settings = {
   soundVolume: number;
 };
 
-export type SettingsActions = {
-  setCardColor: (color: CardColor) => void;
-  setIconTheme: (theme: IconTheme) => void;
-  setSoundVolume: (volume: number) => void;
+export type SettingsAction =
+  | { type: "set_card_color"; payload: CardColor }
+  | { type: "set_icon_theme"; payload: IconTheme }
+  | { type: "set_sound_volume"; payload: number };
+
+export const defaultSettings: Settings = {
+  cardColor: "amber",
+  iconTheme: "animals",
+  soundVolume: 1,
 };
 
 export const SettingsContext = createContext<Settings | null>(null);
-export const SettingsActionsContext = createContext<SettingsActions | null>(null);
+
+export const SettingsDispatchContext =
+  createContext<Dispatch<SettingsAction> | null>(null);
 
 export function useSettings(): Settings {
   const context = useContext(SettingsContext);
-  if (!context) throw new Error("Missing SettingsProvider");
+  if (!context) throw new Error("Missing <SettingsProvider>");
   return context;
 }
 
-export function useSettingsActions(): SettingsActions {
-  const context = useContext(SettingsActionsContext);
-  if (!context) throw new Error("Missing SettingsProvider");
+export function useSettingsDispatch(): Dispatch<SettingsAction> {
+  const context = useContext(SettingsDispatchContext);
+  if (!context) throw new Error("Missing <SettingsProvider>");
   return context;
-}
-
-export function useSettingsFull() {
-  return {
-    ...useSettings(),
-    ...useSettingsActions(),
-  };
 }
