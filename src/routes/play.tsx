@@ -10,6 +10,7 @@ import type { CardData } from "@/lib/types";
 import type { Score } from "@/routes/scores";
 import JSConfetti from "js-confetti";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import useSound from "use-sound";
 import { useLocalStorage } from "usehooks-ts";
 
@@ -18,7 +19,9 @@ export type GameState = "initial" | "displaying-cards" | "playing" | "win";
 const confetti = new JSConfetti();
 
 const Play = () => {
-  const { cardCount, iconTheme, soundVolume } = useGameSettingsFull();
+  const { iconTheme, soundVolume } = useGameSettingsFull();
+  const { cardCountParam } = useParams();
+  const cardCount = cardCountParam ? parseInt(cardCountParam) : 12;
   const powerCardCount = Math.floor(cardCount / 12);
   const [cards, setCards] = useState<CardData[]>(
     createCardArray(iconTheme, false, cardCount / 2, powerCardCount, true)
