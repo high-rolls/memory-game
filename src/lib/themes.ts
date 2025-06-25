@@ -1,4 +1,4 @@
-import type { IconTheme } from "@/context/settings";
+import type { IconTheme } from "@/context/settings.context";
 import emojiJSON from "@/assets/json/categories.min.json";
 import { shuffleArray } from "./utils";
 

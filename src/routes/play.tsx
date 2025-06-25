@@ -4,7 +4,7 @@ import matchSfx from "@/assets/audio/match.ogg";
 import ActionBar from "@/components/action-bar";
 import Board from "@/components/board";
 import StatusBar from "@/components/status-bar";
-import { useSettingsFull } from "@/context/settings";
+import { useSettingsFull } from "@/context/settings.context";
 import { createCardArray } from "@/lib/game";
 import type { CardData } from "@/lib/types";
 import type { Score } from "@/routes/scores";

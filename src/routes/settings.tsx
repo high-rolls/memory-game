@@ -2,7 +2,7 @@ import {
   useSettingsFull,
   type CardColor,
   type IconTheme,
-} from "@/context/settings";
+} from "@/context/settings.context";
 
 const colorClass = {
   amber: "bg-amber-600",
@@ -10,7 +10,7 @@ const colorClass = {
   purple: "bg-purple-600",
 };
 
-function MainMenu() {
+function Settings() {
   const {
     cardColor,
     iconTheme,
@@ -81,4 +81,4 @@ function MainMenu() {
   );
 }
 
-export default MainMenu;
+export default Settings;

@@ -1,4 +1,4 @@
-import { useSettingsFull } from "@/context/settings";
+import { useSettingsFull } from "@/context/settings.context";
 import { FullscreenIcon, Volume1, Volume2, VolumeX } from "lucide-react";
 import { useState } from "react";
 
@@ -11,8 +11,6 @@ const VOLUME_LEVELS = [
 export function GlobalToolBar() {
   const { soundVolume, setSoundVolume } = useSettingsFull();
   const [volumeLevelIndex, setVolumeLevelIndex] = useState(Math.round(soundVolume * 2));
-
-  console.log(volumeLevelIndex);
 
   const handleFullscreenButtonClick = async () => {
     if (document.fullscreenElement) {

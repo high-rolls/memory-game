@@ -1,4 +1,4 @@
-import type { IconTheme } from "@/context/settings";
+import type { IconTheme } from "@/context/settings.context";
 import type { CardData } from "@/lib/types";
 import {
   getRandomEmojiInTheme,

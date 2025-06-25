@@ -1,4 +1,4 @@
-import { useSettings } from "@/context/settings";
+import { useSettings } from "@/context/settings.context";
 import type { CardData } from "@/lib/types";
 import { motion, useAnimation } from "framer-motion";
 import {

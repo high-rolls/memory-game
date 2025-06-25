@@ -1,4 +1,4 @@
-import MainMenu from "@/routes/main-menu";
+import Settings from "@/routes/settings";
 import Play from "@/routes/play";
 import RootLayout from "@/routes/root-layout";
 import Scores from "@/routes/scores";
@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")!).render(
         <Route element={<RootLayout />}>
           <Route index element={<LevelSelect />} />
           <Route path="play/:cardCountParam" element={<Play />} />
-          <Route path="settings" element={<MainMenu />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="scores" element={<Scores />} />
         </Route>
       </Routes>

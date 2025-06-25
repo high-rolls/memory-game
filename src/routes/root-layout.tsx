@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet } from "react-router";
-import { SettingsProvider } from "@/context/settings";
+import { SettingsProvider } from "@/context/settings.provider";
 import { GamepadIcon, MedalIcon, PlayIcon, SettingsIcon } from "lucide-react";
 import { GlobalToolBar } from "@/components/global-tool-bar";
 
