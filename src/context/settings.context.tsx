@@ -1,15 +1,19 @@
 import { createContext, type Dispatch } from "react";
 import { useContext } from "react";
 
-export type CardColor = "amber" | "emerald" | "purple";
-export type IconTheme =
-  | "activities"
-  | "animals"
-  | "flags"
-  | "food-and-drink"
-  | "objects"
-  | "people-and-body"
-  | "smileys-and-emotion";
+export const CARD_COLORS = ["amber", "emerald", "purple"] as const;
+export type CardColor = (typeof CARD_COLORS)[number];
+
+export const ICON_THEMES = [
+  "activities",
+  "animals",
+  "flags",
+  "food-and-drink",
+  "objects",
+  "people-and-body",
+  "smileys-and-emotion",
+] as const;
+export type IconTheme = (typeof ICON_THEMES)[number];
 
 export type Settings = {
   cardColor: CardColor;

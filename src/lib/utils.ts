@@ -1,3 +1,10 @@
+export function isInArray<T extends readonly string[]>(
+  arr: T,
+  value: string
+): value is T[number] {
+  return arr.includes(value as T[number]);
+}
+
 export function shuffleArray<T>(arr: T[]): T[] {
   const newArr = [...arr];
   for (let i = newArr.length - 1; i > 0; i--) {
