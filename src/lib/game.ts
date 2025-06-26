@@ -1,4 +1,4 @@
-import type { IconTheme } from "@/context/settings.context";
+import type { IconThemeId } from "@/context/settings.context";
 import type { CardData } from "@/lib/types";
 import {
   getRandomEmojiInTheme,
@@ -8,7 +8,7 @@ import {
 import { shuffleArray } from "./utils";
 
 export function createCardArray(
-  iconTheme: IconTheme,
+  iconThemeId: IconThemeId,
   isFaceUp: boolean,
   numPairs: number,
   numPowerPairs: number,
@@ -19,8 +19,8 @@ export function createCardArray(
   }
 
   const otherThemes = Object.keys(themeEmojis).filter(
-    (k) => k !== iconTheme
-  ) as IconTheme[];
+    (k) => k !== iconThemeId
+  ) as IconThemeId[];
   // Pick power icons randomly from other themes
   const powerEmojis: string[] = [];
   for (let i = 0; i < numPowerPairs; i++) {
@@ -35,7 +35,7 @@ export function createCardArray(
 
   const emojis = [
     ...powerEmojis,
-    ...getRandomEmojisInTheme(iconTheme, numPairs - numPowerPairs),
+    ...getRandomEmojisInTheme(iconThemeId, numPairs - numPowerPairs),
   ];
   const cards = [];
 
