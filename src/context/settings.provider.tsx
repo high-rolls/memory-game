@@ -12,8 +12,8 @@ function reducer(state: Settings, action: SettingsAction): Settings {
   switch (action.type) {
     case "set_card_color":
       return { ...state, cardColor: action.payload };
-    case "set_icon_theme":
-      return { ...state, iconTheme: action.payload };
+    case "set_icon_theme_id":
+      return { ...state, iconThemeId: action.payload };
     case "set_sound_volume":
       return { ...state, soundVolume: action.payload };
     default:

@@ -3,6 +3,7 @@ import {
   ICON_THEMES,
   useSettings,
   useSettingsDispatch,
+  type IconThemeId,
 } from "@/context/settings.context";
 import { isInArray } from "@/lib/utils";
 
@@ -13,7 +14,7 @@ const colorClass = {
 };
 
 function Settings() {
-  const { cardColor, iconTheme } = useSettings();
+  const { cardColor, iconThemeId } = useSettings();
 
   const dispatch = useSettingsDispatch();
 
@@ -26,8 +27,9 @@ function Settings() {
   };
 
   const handleIconThemeChange = (value: string) => {
-    if (isInArray(ICON_THEMES, value)) {
-      dispatch({ type: "set_icon_theme", payload: value });
+    const iconTheme = ICON_THEMES.find((theme) => theme.id === value);
+    if (iconTheme) {
+      dispatch({ type: "set_icon_theme_id", payload: value as IconThemeId });
     } else {
       console.warn("Invalid icon theme selected:", value);
     }
@@ -42,17 +44,15 @@ function Settings() {
             Emoji Theme
           </span>
           <select
-            defaultValue={iconTheme}
+            defaultValue={iconThemeId}
             className="select"
             onChange={(event) => handleIconThemeChange(event.target.value)}
           >
-            <option value="activities">⚽ Activities</option>
-            <option value="animals">🐸 Animals</option>
-            <option value="flags">🚩 Flags</option>
-            <option value="food-and-drink">🍎 Food & Drink</option>
-            <option value="objects">💍 Objects</option>
-            <option value="people-and-body">👄 People & Body</option>
-            <option value="smileys-and-emotion">😎 Smileys & Emotion</option>
+            {ICON_THEMES.map(({ id, emoji, label }) => (
+              <option key={id} value={id}>
+                {emoji} {label}
+              </option>
+            ))}
           </select>
         </label>
       </div>

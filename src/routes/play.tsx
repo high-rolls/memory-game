@@ -6,7 +6,7 @@ import Board from "@/components/board";
 import StatusBar from "@/components/status-bar";
 import { useSettings } from "@/context/settings.context";
 import { createCardArray } from "@/lib/game";
-import type { CardData } from "@/lib/types";
+import type { CardCount, CardData } from "@/lib/types";
 import type { Score } from "@/routes/scores";
 import JSConfetti from "js-confetti";
 import { useEffect, useState } from "react";
@@ -19,12 +19,15 @@ export type GameState = "initial" | "displaying-cards" | "playing" | "win";
 const confetti = new JSConfetti();
 
 const Play = () => {
-  const { iconTheme, soundVolume } = useSettings();
+  const { iconThemeId, soundVolume } = useSettings();
   const { cardCountParam } = useParams();
-  const cardCount = cardCountParam ? parseInt(cardCountParam) : 12;
+  const cardCount: CardCount = cardCountParam
+    ? (parseInt(cardCountParam) as CardCount)
+    : 12;
+
   const powerCardCount = Math.floor(cardCount / 12);
   const [cards, setCards] = useState<CardData[]>(
-    createCardArray(iconTheme, false, cardCount / 2, powerCardCount, true)
+    createCardArray(iconThemeId, false, cardCount / 2, powerCardCount, true)
   );
   const [gameState, setGameState] = useState<GameState>("initial");
   const [score, setScore] = useState(0);
@@ -68,7 +71,7 @@ const Play = () => {
       const newScore = {
         cardCount,
         score: Math.floor(score),
-        iconTheme,
+        iconThemeId,
         date: new Date(),
       };
       setScores([...scores, newScore]);
@@ -154,7 +157,7 @@ const Play = () => {
 
   const startGame = () => {
     const newCards = createCardArray(
-      iconTheme,
+      iconThemeId,
       false,
       cardCount / 2,
       powerCardCount,

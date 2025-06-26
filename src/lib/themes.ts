@@ -1,5 +1,5 @@
-import type { IconTheme } from "@/context/settings.context";
 import emojiJSON from "@/assets/json/categories.min.json";
+import type { IconThemeId } from "@/context/settings.context";
 import { shuffleArray } from "./utils";
 
 type EmojiEntry = {
@@ -41,7 +41,7 @@ function getEmojisByGroupAndSubgroupPrefix(
   return matchedEmojis;
 }
 
-export const themeEmojis: Record<IconTheme, string[]> = {
+export const themeEmojis: Record<IconThemeId, string[]> = {
   activities: getEmojisByGroupAndSubgroupPrefix(emojiJSON, "Activities"),
   animals: getEmojisByGroupAndSubgroupPrefix(
     emojiJSON,
@@ -64,24 +64,14 @@ export const themeEmojis: Record<IconTheme, string[]> = {
   ),
 };
 
-export const THEME_NAMES: Record<IconTheme, string> = {
-  activities: "Activities",
-  animals: "Animals",
-  flags: "Flags",
-  "food-and-drink": "Food & Drink",
-  objects: "Objects",
-  "people-and-body": "People & Body",
-  "smileys-and-emotion": "Smileys & Emotion",
-};
-
-export function getEmojisForTheme(theme: IconTheme, length?: number) {
-  const emojis = themeEmojis[theme] || themeEmojis.animals;
+export function getEmojisForTheme(iconThemeId: IconThemeId, length?: number) {
+  const emojis = themeEmojis[iconThemeId] || themeEmojis.animals;
   if (length) return emojis.slice(0, length);
   return emojis;
 }
 
-export function getRandomEmojisInTheme(theme: IconTheme, length: number) {
-  const allEmojis = getEmojisForTheme(theme);
+export function getRandomEmojisInTheme(iconThemeId: IconThemeId, length: number) {
+  const allEmojis = getEmojisForTheme(iconThemeId);
   if (length > allEmojis.length) {
     throw new Error(
       "Provided length is greater than the number of emoji in theme."
@@ -91,8 +81,8 @@ export function getRandomEmojisInTheme(theme: IconTheme, length: number) {
   return shuffled.slice(0, length);
 }
 
-export function getRandomEmojiInTheme(theme: IconTheme) {
-  const allEmojis = getEmojisForTheme(theme);
+export function getRandomEmojiInTheme(iconThemeId: IconThemeId) {
+  const allEmojis = getEmojisForTheme(iconThemeId);
   const randomIndex = Math.floor(Math.random() * allEmojis.length);
   return allEmojis[randomIndex];
 }

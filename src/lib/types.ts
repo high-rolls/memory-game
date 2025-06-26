@@ -1,4 +1,5 @@
-export type CardCount = number;
+export const CARD_COUNTS = [12, 24, 36, 48, 60, 72, 84, 96] as const;
+export type CardCount = (typeof CARD_COUNTS)[number];
 
 export type CardData = {
   id: number;
@@ -10,18 +11,12 @@ export type CardData = {
 };
 
 export type LevelData = {
+  id: number;
   cardCount: CardCount;
   starsObtained: number;
   starCost: number;
   topScore?: number;
 };
-
-export type LevelDataActions = {
-  setCardCount: (cardCount: CardCount) => void;
-  setStarsObtained: (starsObtained: number) => void;
-  setStarCost: (starCost: number) => void;
-  setTopScore: (topScore: number) => void;
-}
 
 export type WindowSize = {
   width: number;

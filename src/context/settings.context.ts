@@ -5,30 +5,31 @@ export const CARD_COLORS = ["amber", "emerald", "purple"] as const;
 export type CardColor = (typeof CARD_COLORS)[number];
 
 export const ICON_THEMES = [
-  "activities",
-  "animals",
-  "flags",
-  "food-and-drink",
-  "objects",
-  "people-and-body",
-  "smileys-and-emotion",
+  { id: "activities", emoji: "⚽", label: "Activities" },
+  { id: "animals", emoji: "🐸", label: "Animals" },
+  { id: "flags", emoji: "🚩", label: "Flags" },
+  { id: "food-and-drink", emoji: "🍎", label: "Food & Drink" },
+  { id: "objects", emoji: "💍", label: "Objects" },
+  { id: "people-and-body", emoji: "👄", label: "People & Body" },
+  { id: "smileys-and-emotion", emoji: "😎", label: "Smileys & Emotion" },
 ] as const;
-export type IconTheme = (typeof ICON_THEMES)[number];
+
+export type IconThemeId = (typeof ICON_THEMES)[number]["id"];
 
 export type Settings = {
   cardColor: CardColor;
-  iconTheme: IconTheme;
+  iconThemeId: IconThemeId;
   soundVolume: number;
 };
 
 export type SettingsAction =
   | { type: "set_card_color"; payload: CardColor }
-  | { type: "set_icon_theme"; payload: IconTheme }
+  | { type: "set_icon_theme_id"; payload: IconThemeId }
   | { type: "set_sound_volume"; payload: number };
 
 export const defaultSettings: Settings = {
   cardColor: "amber",
-  iconTheme: "animals",
+  iconThemeId: "animals",
   soundVolume: 1,
 };
 
