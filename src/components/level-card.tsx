@@ -53,17 +53,15 @@ function LevelCard({
         </div>
       )}
 
-      <Link to={`/play/${cardCount}`} className="btn btn-primary w-full">
-        {isLocked ? (
-          <>
-            <LockIcon size={16} />
-          </>
-        ) : (
-          <>
-            <PlayIcon size={16} fill="var(--color-base-content)" />
-          </>
-        )}
-      </Link>
+      {isLocked ? (
+        <button className="btn btn-primary w-full" disabled>
+          <LockIcon size={16} />
+        </button>
+      ) : (
+        <Link to={`/play/${cardCount}`} className="btn btn-primary w-full">
+          <PlayIcon size={16} fill="var(--color-base-content)" />
+        </Link>
+      )}
     </div>
   );
 }
