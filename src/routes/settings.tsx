@@ -61,6 +61,7 @@ function Settings() {
           <span className="text-lg font-bold text-base-content">
             Card Color
           </span>
+          {/* TODO: Change this to a custom selector which displays card back squares of each color. */}
           <select
             defaultValue={cardColor}
             className={`select ${colorClass[cardColor]}`}

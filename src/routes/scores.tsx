@@ -106,6 +106,7 @@ const Scores = () => {
         >
           {ICON_THEME_OPTIONS.map(({ id, emoji, label }) => (
             <a
+              key={id ? id : "all"}
               role="tab"
               className={`tab md:w-full  gap-1 ${
                 selectedIconThemeId === id ? "tab-active" : ""
@@ -124,6 +125,7 @@ const Scores = () => {
         >
           {CARD_COUNT_OPTIONS.map((value) => (
             <a
+              key={value ? value.toString() : "all"}
               role="tab"
               className={`tab gap-1 ${
                 selectedCardCount === value ? "tab-active" : ""

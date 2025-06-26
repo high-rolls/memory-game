@@ -38,6 +38,7 @@ function LevelCard({
           <div className="flex">
             {new Array(3).fill(0).map((_, index) => (
               <StarIcon
+                key={index.toString()}
                 size={24}
                 fill={
                   index < starsObtained ? "var(--color-warning)" : "transparent"
