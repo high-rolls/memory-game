@@ -10,7 +10,7 @@ export const ICON_THEMES = [
   { id: "flags", emoji: "🚩", label: "Flags" },
   { id: "food-and-drink", emoji: "🍎", label: "Food & Drink" },
   { id: "objects", emoji: "💍", label: "Objects" },
-  { id: "people-and-body", emoji: "👄", label: "People & Body" },
+  { id: "people-and-body", emoji: "👀", label: "People & Body" },
   { id: "smileys-and-emotion", emoji: "😎", label: "Smileys & Emotion" },
 ] as const;
 
