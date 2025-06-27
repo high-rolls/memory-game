@@ -1,14 +1,8 @@
+import type { Score } from "@/context/scores.context";
 import { ICON_THEMES, type IconThemeId } from "@/context/settings.context";
-import { CARD_COUNTS, type CardCount } from "@/lib/types";
+import { CARD_COUNTS, LEVELS, type CardCount } from "@/lib/levels";
 import { useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
-
-export type Score = {
-  cardCount: CardCount;
-  score: number;
-  iconThemeId: IconThemeId;
-  date: Date;
-};
 
 const ICON_THEME_OPTIONS = [
   { id: null, emoji: "All", label: null },
@@ -35,9 +29,10 @@ const Scores = () => {
 
   let displayedScores = scores;
   if (selectedCardCount) {
-    displayedScores = displayedScores.filter(
-      (score) => score.cardCount === selectedCardCount
-    );
+    displayedScores = displayedScores.filter((score) => {
+      const level = LEVELS.find((level) => level.id === score.levelId);
+      return level && level.cardCount === selectedCardCount;
+    });
   }
 
   if (selectedIconThemeId) {
@@ -75,7 +70,12 @@ const Scores = () => {
                       <tr key={date.toISOString()}>
                         <th>{index + 1}</th>
                         <td className="text-end">{score.score}</td>
-                        <td className="text-end">{score.cardCount}</td>
+                        <td className="text-end">
+                          {
+                            LEVELS.find((l) => l.id === score.levelId)
+                              ?.cardCount
+                          }
+                        </td>
                         <td>{iconThemeLabel}</td>
                         <td>
                           {date.toLocaleDateString(undefined, {

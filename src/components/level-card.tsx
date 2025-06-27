@@ -1,18 +1,31 @@
-import type { LevelData } from "@/lib/types";
+import { useCurrentLevelDispatch } from "@/context/level.context";
+import { getStarsObtained, getTopScore, getTotalStars, useScores } from "@/context/scores.context";
+import type { LevelData } from "@/lib/levels";
 import { LockIcon, PlayIcon, StarIcon } from "lucide-react";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
-type LevelCardProps = LevelData & {
-  isLocked: boolean;
-};
+type LevelCardProps = LevelData;
 
 function LevelCard({
+  id,
   cardCount,
-  isLocked,
   starCost,
-  starsObtained,
-  topScore,
 }: LevelCardProps) {
+  const currentLevelDispatch = useCurrentLevelDispatch();
+  const navigate = useNavigate();
+  const scores = useScores();
+
+  const topScore = getTopScore(scores, id);
+  const starsObtained = getStarsObtained(scores, id);
+  const totalStars = getTotalStars(scores);
+  
+  const isLocked = totalStars < starCost;
+
+  const onPlayButtonClick = () => {
+    currentLevelDispatch(id);
+    navigate("play");
+  }
+
   return (
     <div
       className={`p-6 flex flex-col gap-1 rounded-lg bg-base-300 shadow-sm ${
@@ -59,9 +72,9 @@ function LevelCard({
           <LockIcon size={16} />
         </button>
       ) : (
-        <Link to={`/play/${cardCount}`} className="btn btn-primary w-full">
+        <button onClick={onPlayButtonClick} className="btn btn-primary w-full">
           <PlayIcon size={16} fill="var(--color-base-content)" />
-        </Link>
+        </button>
       )}
     </div>
   );

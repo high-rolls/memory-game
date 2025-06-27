@@ -4,15 +4,14 @@ import matchSfx from "@/assets/audio/match.ogg";
 import ActionBar from "@/components/action-bar";
 import Board from "@/components/board";
 import StatusBar from "@/components/status-bar";
+import { CurrentLevelContext } from "@/context/level.context";
+import { useScoresDispatch } from "@/context/scores.context";
 import { useSettings } from "@/context/settings.context";
 import { createCardArray } from "@/lib/game";
-import type { CardCount, CardData } from "@/lib/types";
-import type { Score } from "@/routes/scores";
+import type { CardData } from "@/lib/types";
 import JSConfetti from "js-confetti";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { use, useEffect, useState } from "react";
 import useSound from "use-sound";
-import { useLocalStorage } from "usehooks-ts";
 
 export type GameState = "initial" | "displaying-cards" | "playing" | "win";
 
@@ -20,10 +19,10 @@ const confetti = new JSConfetti();
 
 const Play = () => {
   const { iconThemeId, soundVolume } = useSettings();
-  const { cardCountParam } = useParams();
-  const cardCount: CardCount = cardCountParam
-    ? (parseInt(cardCountParam) as CardCount)
-    : 12;
+  const level = use(CurrentLevelContext);
+  const scoresDispatch = useScoresDispatch();
+
+  const cardCount = level.cardCount;
 
   const powerCardCount = Math.floor(cardCount / 12);
   const [cards, setCards] = useState<CardData[]>(
@@ -32,7 +31,6 @@ const Play = () => {
   const [gameState, setGameState] = useState<GameState>("initial");
   const [score, setScore] = useState(0);
   const [scoreChange, setScoreChange] = useState(0);
-  const [scores, setScores] = useLocalStorage<Score[]>("scores", []);
   const [, setStateTimer] = useState(0);
   const [displaySeconds, setDisplaySeconds] = useState(0);
   const [revealAbilityCount, setRevealAbilityCount] = useState(0);
@@ -65,22 +63,36 @@ const Play = () => {
 
   const matchCount = cards.filter((card) => card.isMatched).length / 2;
 
-  if (gameState === "playing" && matchCount === cardCount / 2) {
-    setTimeout(() => {
-      setGameState("win");
-      const newScore = {
-        cardCount,
-        score: Math.floor(score),
-        iconThemeId,
-        date: new Date(),
-      };
-      setScores([...scores, newScore]);
-      confetti.addConfetti();
-      playConfettiSound();
-      setTimeout(() => playFanfareSound(), 500);
-      navigator.vibrate(200);
-    }, 1500);
-  }
+  useEffect(() => {
+    if (gameState === "playing" && matchCount === cardCount / 2) {
+      const winTimeout = setTimeout(() => {
+        setGameState("win");
+        const newScore = {
+          levelId: level.id,
+          score: Math.floor(score),
+          iconThemeId,
+          date: new Date(),
+        };
+        scoresDispatch({ type: "add_score", payload: newScore });
+        confetti.addConfetti();
+        playConfettiSound();
+        setTimeout(() => playFanfareSound(), 500);
+        navigator.vibrate(200);
+      }, 1500);
+
+      return () => clearTimeout(winTimeout);
+    }
+  }, [
+    cardCount,
+    gameState,
+    iconThemeId,
+    level.id,
+    matchCount,
+    playConfettiSound,
+    playFanfareSound,
+    score,
+    scoresDispatch,
+  ]);
 
   const markMatched = (ids: number[], updatedCards: CardData[]) => {
     let matchScore = 0;

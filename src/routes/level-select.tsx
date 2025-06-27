@@ -1,25 +1,32 @@
 import LevelCard from "@/components/level-card";
-import { LevelsContext } from "@/context/levels.context";
-import { use } from "react";
+import { getTotalStars, useScores } from "@/context/scores.context";
+import { LEVELS } from "@/lib/levels";
+import { StarIcon } from "lucide-react";
+
+const levels = LEVELS;
 
 function LevelSelect() {
-  const levels = use(LevelsContext);
-
-  const starCount = levels.reduce(
-    (acc, level) => (acc += level.starsObtained),
-    0
-  );
-
+  const scores = useScores();
+  const totalStars = getTotalStars(scores);
   return (
-    <div className="grid sm:grid-cols-2 md:grid-cols-3 max-h-full w-full overflow-y-auto gap-3 p-3">
-      {levels.map((level) => (
-        <LevelCard
-          key={level.id}
-          {...level}
-          isLocked={starCount < level.starCost}
+    <>
+      <h1 className="flex p-3 gap-2 text-3xl justify-center items-center">
+        <StarIcon
+          size={24}
+          className="text-warning"
+          fill="var(--color-warning)"
         />
-      ))}
-    </div>
+        {totalStars}
+      </h1>
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 max-h-full w-full overflow-y-auto gap-3 p-3">
+        {levels.map((level) => { return (
+          <LevelCard
+            key={level.id}
+            {...level}
+          />
+        )})}
+      </div>
+    </>
   );
 }
 
