@@ -1,4 +1,4 @@
-import { MedalIcon, PlayIcon, SettingsIcon } from "lucide-react";
+import { MedalIcon, PlayIcon, PlaySquareIcon, SettingsIcon } from "lucide-react";
 import { Link, NavLink } from "react-router";
 
 export function TopNav() {
@@ -18,7 +18,7 @@ export function TopNav() {
                 isActive ? "menu-active" : undefined
               }
             >
-              <PlayIcon size={16} /> Play
+              <PlaySquareIcon size={16} /> Levels
             </NavLink>
           </li>
           <li>

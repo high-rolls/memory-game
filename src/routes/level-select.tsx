@@ -9,8 +9,8 @@ function LevelSelect() {
   const scores = useScores();
   const totalStars = getTotalStars(scores);
   return (
-    <>
-      <h1 className="flex p-3 gap-2 text-3xl justify-center items-center">
+    <div className="flex flex-col h-full max-h-full">
+      <h1 className="flex p-3 gap-2 bg-base-200 text-3xl justify-center items-center">
         <StarIcon
           size={24}
           className="text-warning"
@@ -18,7 +18,7 @@ function LevelSelect() {
         />
         {totalStars}
       </h1>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 max-h-full w-full overflow-y-auto gap-3 p-3">
+      <div className="grid flex-1 sm:grid-cols-2 md:grid-cols-3 overflow-y-auto gap-3 p-3">
         {levels.map((level) => { return (
           <LevelCard
             key={level.id}
@@ -26,7 +26,7 @@ function LevelSelect() {
           />
         )})}
       </div>
-    </>
+    </div>
   );
 }
 

@@ -1,16 +1,18 @@
+import BoardPreview from "@/components/board-preview";
 import { useCurrentLevelDispatch } from "@/context/level.context";
-import { getStarsObtained, getTopScore, getTotalStars, useScores } from "@/context/scores.context";
+import {
+  getStarsObtained,
+  getTopScore,
+  getTotalStars,
+  useScores,
+} from "@/context/scores.context";
 import type { LevelData } from "@/lib/levels";
-import { LockIcon, PlayIcon, StarIcon } from "lucide-react";
+import { StarIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 
 type LevelCardProps = LevelData;
 
-function LevelCard({
-  id,
-  cardCount,
-  starCost,
-}: LevelCardProps) {
+function LevelCard({ id, cardCount, starCost }: LevelCardProps) {
   const currentLevelDispatch = useCurrentLevelDispatch();
   const navigate = useNavigate();
   const scores = useScores();
@@ -18,65 +20,61 @@ function LevelCard({
   const topScore = getTopScore(scores, id);
   const starsObtained = getStarsObtained(scores, id);
   const totalStars = getTotalStars(scores);
-  
+
   const isLocked = totalStars < starCost;
 
-  const onPlayButtonClick = () => {
+  const handleClick = () => {
     currentLevelDispatch(id);
     navigate("play");
-  }
+  };
 
   return (
-    <div
-      className={`p-6 flex flex-col gap-1 rounded-lg bg-base-300 shadow-sm ${
-        isLocked ? "opacity-50" : ""
-      }`}
+    <button
+      className={`btn p-6 flex-col justify-between h-full gap-3 btn-primary`}
+      onClick={handleClick}
+      disabled={isLocked}
     >
-      <h2 className="text-3xl font-bold">
-        {cardCount} <span className="text-base">Cards</span>
-      </h2>
+      <div className="w-full flex justify-between">
+        <h2 className="text-3xl font-bold">
+          {cardCount} <span className="text-base font-normal">Cards</span>
+        </h2>
 
-      {isLocked ? (
-        <>
-          <div></div>
-          <div>
-            <h3 className="text-xs text-base-content">Unlocks at</h3>
+        {isLocked ? (
+          <div className="text-base-content">
+            <h3 className="text-xs">Unlocks at</h3>
             <p className="flex items-center gap-1 text-xl font-bold">
               {starCost} <StarIcon size={16} />
             </p>
           </div>
-        </>
-      ) : (
-        <div className="flex justify-between items-center gap-3">
-          <div className="flex">
-            {new Array(3).fill(0).map((_, index) => (
-              <StarIcon
-                key={index.toString()}
-                size={24}
-                fill={
-                  index < starsObtained ? "var(--color-warning)" : "transparent"
-                }
-                className="text-warning/50"
-              />
-            ))}
+        ) : (
+          <div className="flex flex-col items-center place-self-end">
+            <div className="flex">
+              {new Array(3).fill(0).map((_, index) => (
+                <StarIcon
+                  key={index.toString()}
+                  size={20}
+                  fill={
+                    index < starsObtained
+                      ? "var(--color-warning)"
+                      : "transparent"
+                  }
+                  className="text-warning/50"
+                />
+              ))}
+            </div>
+            <p className="text-2xl font-bold">{topScore ? topScore : "-"}</p>
           </div>
-          <div className="flex flex-col items-end place-self-end">
-            <h3 className="text-xs text-base-content/50">Top Score</h3>
-            <p className="text-xl font-bold">{topScore ? topScore : "-"}</p>
-          </div>
-        </div>
-      )}
-
-      {isLocked ? (
-        <button className="btn btn-primary w-full" disabled>
-          <LockIcon size={16} />
-        </button>
-      ) : (
-        <button onClick={onPlayButtonClick} className="btn btn-primary w-full">
-          <PlayIcon size={16} fill="var(--color-base-content)" />
-        </button>
-      )}
-    </div>
+        )}
+      </div>
+      <div
+        className={`flex flex-1 flex-col w-full min-h-[100px] ${
+          isLocked ? "opacity-50" : ""
+        }`}
+      >
+        <BoardPreview cardCount={cardCount} />
+      </div>
+      
+    </button>
   );
 }
 

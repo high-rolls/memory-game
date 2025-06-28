@@ -1,4 +1,4 @@
-import { GamepadIcon, MedalIcon, SettingsIcon } from "lucide-react";
+import { GamepadIcon, MedalIcon, PlaySquareIcon, SettingsIcon } from "lucide-react";
 import { NavLink } from "react-router";
 
 export function BottomDock() {
@@ -8,8 +8,8 @@ export function BottomDock() {
         to="/"
         className={({ isActive }) => (isActive ? "dock-active" : undefined)}
       >
-        <GamepadIcon size={20} />
-        <span className="dock-label">Game</span>
+        <PlaySquareIcon size={20} />
+        <span className="dock-label">Levels</span>
       </NavLink>
 
       <NavLink
