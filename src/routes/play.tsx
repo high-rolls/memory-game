@@ -115,7 +115,7 @@ const Play = () => {
     setDisplaySeconds(0);
   }, [cardCount, iconThemeId, powerCardCount]);
 
-   useLayoutEffect(() => {
+  useLayoutEffect(() => {
     resetBoard();
     setGameState("initial");
   }, [level.id, resetBoard]);
@@ -241,13 +241,15 @@ const Play = () => {
         onNewGameButtonClick={startGame}
         onRevealAllButtonClick={useRevealAbility}
       />
-      <WinModal
-        isOpen={gameState === "win"}
-        levelId={level.id}
-        score={Math.floor(score)}
-        onNextLevelClick={handleNextLevelClick}
-        onReplayClick={handleReplayClick}
-      />
+      {(gameState === "win" || gameState === "initial") && (
+        <WinModal
+          isOpen={gameState === "win"}
+          levelId={level.id}
+          score={Math.floor(score)}
+          onNextLevelClick={handleNextLevelClick}
+          onReplayClick={handleReplayClick}
+        />
+      )}
     </div>
   );
 };

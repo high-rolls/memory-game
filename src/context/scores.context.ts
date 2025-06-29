@@ -29,8 +29,10 @@ export function useScoresDispatch() {
   return context;
 }
 
-export function getTopScore(scores: Score[], levelId: LevelId) {
-  const levelScores = scores.filter((s) => s.levelId === levelId);
+export function getTopScore(scores: Score[], levelId?: LevelId) {
+  const levelScores = levelId
+    ? scores.filter((s) => s.levelId === levelId)
+    : scores;
   if (!levelScores) return 0;
   return levelScores.reduce(
     (prev: number, curr: Score) => (curr.score > prev ? curr.score : prev),
@@ -38,13 +40,17 @@ export function getTopScore(scores: Score[], levelId: LevelId) {
   );
 }
 
-export function getStarsObtained(scores: Score[], levelId: LevelId) {
+export function getStarsForScore(levelId: LevelId, score: number) {
   const level = LEVELS.find((l) => l.id === levelId);
   if (!level) return 0;
-  const topScore = getTopScore(scores, levelId);
   const maxScore = level.cardCount * 100;
   const scoreForStar = maxScore * 0.25;
-  return Math.min(3, Math.floor(topScore / scoreForStar));
+  return Math.min(3, Math.floor(score / scoreForStar));
+}
+
+export function getStarsObtained(scores: Score[], levelId: LevelId) {
+  const topScore = getTopScore(scores, levelId);
+  return getStarsForScore(levelId, topScore);
 }
 
 export function getTotalStars(scores: Score[]) {

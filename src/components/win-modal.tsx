@@ -5,7 +5,7 @@ import {
 } from "@/context/scores.context";
 import { LEVELS, type LevelId } from "@/lib/levels";
 import { ListIcon, PlayIcon, RefreshCwIcon, StarIcon } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Link } from "react-router";
 
 export interface IWinModalProps {
@@ -26,48 +26,53 @@ export function WinModal({
   const ref = useRef<HTMLDialogElement>(null);
   const scores = useScores();
 
-  const stars = getStarsObtained(scores, levelId);
-  const topScore = getTopScore(scores, levelId);
   const level = LEVELS.find((l) => l.id === levelId);
-  const nextLevel = LEVELS.find((l) => l.id === levelId + 1);
-
   if (!level) throw new Error("Level not found with ID: " + levelId);
 
-  const maxScore = level.cardCount * 100;
-  const scoreForStar = maxScore * 0.25;
-  const nextStar = Math.min(3, stars + 1);
-  const nextStarThreshold = scoreForStar * nextStar;
-  const neededForNextStar = Math.max(
-    0,
-    Math.ceil(nextStarThreshold - topScore)
-  );
+  // Level scores, sorted by date descending
+  const levelScores = scores
+    .filter((score) => score.levelId === levelId)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  useEffect(() => {
-    if (ref.current) {
-      if (isOpen && !ref.current.open) {
-        ref.current.showModal();
-      } else if (!isOpen && ref.current.open) {
-        ref.current.close();
-      }
-    }
-  }, [isOpen]);
+  const isFirstScore = levelScores.length === 1;
+
+  const currentStars = getStarsObtained(levelScores, levelId);
+  const currentTopScore = getTopScore(scores);
+
+  const previousScores = levelScores.slice(1);
+  const prevStars = getStarsObtained(previousScores, levelId);
+  const prevTopScore = getTopScore(previousScores);
+
+  const nextLevel = LEVELS.find((l) => l.id === levelId + 1);
+
+  const maxScore = level.cardCount * 100;
+  const scorePerStar = maxScore * 0.25;
+
+  const nextStar = Math.min(3, currentStars + 1);
+  const nextStarThreshold = scorePerStar * nextStar;
+  const currentStarThreshold = scorePerStar * currentStars;
+
+  const progressValue = Math.max(currentTopScore - currentStarThreshold, 0);
+  const progressMax = nextStarThreshold - currentStarThreshold;
 
   return (
-    <dialog ref={ref} className="modal">
+    <dialog ref={ref} open={isOpen} className="modal">
       <div className="modal-box text-center">
         <h2 className="text-2xl mb-4">Level Complete!</h2>
         <div className="flex justify-center gap-6 mb-4">
           <div>
-            <p className="text-sm text-base-content/80">Your Score</p>
+            <p className="text-sm text-base-content/80">Score</p>
             <h3 className="text-4xl font-bold">{score}</h3>
           </div>
-          <div>
-            <p className="text-sm text-base-content/80">Top Score</p>
-            <h3 className="text-4xl font-bold">{topScore}</h3>
-          </div>
+          {!isFirstScore && (
+            <div>
+              <p className="text-sm text-base-content/80">Top Score</p>
+              <h3 className="text-4xl font-bold">{currentTopScore}</h3>
+            </div>
+          )}
         </div>
 
-        {score > topScore && (
+        {score > prevTopScore && (
           <p className="text-success font-semibold mb-2">🎉 New High Score!</p>
         )}
         <h3 className="flex justify-center mb-2">
@@ -75,32 +80,40 @@ export function WinModal({
             <StarIcon
               key={i}
               size={32}
-              fill={i < stars ? "var(--color-warning)" : ""}
+              fill={i < currentStars ? "var(--color-warning)" : ""}
+              className={
+                i >= prevStars && i < currentStars ? "animate-bounce" : ""
+              }
               strokeWidth={1}
             />
           ))}
         </h3>
-        {stars < 3 && (
-          <p className="text-sm mb-4">
-            Score {neededForNextStar} more for the next star
-          </p>
+        {currentStars < 3 && (
+          <div className="flex justify-center items-center gap-3">
+            <span className="text-sm text-primary-content/80">
+              {currentStarThreshold}
+            </span>
+            <progress
+              className="progress w-30"
+              value={progressValue}
+              max={progressMax}
+            ></progress>
+            <span className="font-semibold">{nextStarThreshold}</span>
+          </div>
         )}
-        <div className="modal-action justify-between">
-          <Link to="/" className="btn btn-neutral">
-            <ListIcon size={16} /> Levels
+        <div className="modal-action flex-col justify-around">
+          <Link to="/" className="btn btn-soft">
+            <ListIcon size={16} /> Back to Levels
           </Link>
           <button
-            className="btn btn-square btn-ghost"
+            className="btn btn-soft"
             onClick={onReplayClick}
             title="Replay"
           >
-            <RefreshCwIcon size={18} />
+            <RefreshCwIcon size={18} /> Replay
           </button>
           {nextLevel && (
-            <button
-              className="btn btn-primary"
-              onClick={onNextLevelClick}
-            >
+            <button className="btn btn-primary" onClick={onNextLevelClick}>
               <PlayIcon size={16} /> Next Level
             </button>
           )}
