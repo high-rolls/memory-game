@@ -1,4 +1,3 @@
-import { useCurrentLevelDispatch } from "@/context/level.context";
 import {
   getStarsObtained,
   getTopScore,
