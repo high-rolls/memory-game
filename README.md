@@ -4,7 +4,7 @@ A simple yet polished **memory game** built with **React**, **TypeScript**, **re
 
 ## 🎮 Try it live
 
-👉 [Play the game on GitHub Pages](https://seu-usuario.github.io/seu-repo)
+👉 [Play the game on GitHub Pages](https://high-rolls.github.io/memory-game/)
 
 ## 🚀 Features
 
@@ -40,7 +40,7 @@ Through this project, I practiced:
 
 ```bash
 # Clone the repo
-git clone https://github.com/seu-usuario/seu-repo.git
+git clone https://github.com/high-rolls/memory-game.git
 
 # Install dependencies
 npm install
