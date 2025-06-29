@@ -25,10 +25,20 @@ const colorThemes = {
     borderColor: "border-emerald-700",
     faceColor: "bg-emerald-200",
   },
+  pink: {
+    backColor: "from-pink-500 to-pink-600",
+    borderColor: "border-pink-700",
+    faceColor: "bg-pink-200",
+  },
   purple: {
     backColor: "from-purple-500 to-purple-600",
     borderColor: "border-purple-700",
     faceColor: "bg-purple-200",
+  },
+  sky: {
+    backColor: "from-sky-500 to-sky-600",
+    borderColor: "border-sky-700",
+    faceColor: "bg-sky-200",
   },
 };
 
