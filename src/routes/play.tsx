@@ -1,16 +1,21 @@
 import confettiSfx from "@/assets/audio/confetti-cannon.wav";
-import fanfareSfx from "@/assets/audio/kazoo-fanfare.wav";
-import matchSfx from "@/assets/audio/match.ogg";
+import fanfareSfx from "@/assets/audio/victory.mp3";
+import matchSfx from "@/assets/audio/blip.mp3";
 import ActionBar from "@/components/action-bar";
 import Board from "@/components/board";
 import StatusBar from "@/components/status-bar";
-import { CurrentLevelContext } from "@/context/level.context";
+import { WinModal } from "@/components/win-modal";
+import {
+  useCurrentLevel,
+  useCurrentLevelDispatch,
+} from "@/context/level.context";
 import { useScoresDispatch } from "@/context/scores.context";
 import { useSettings } from "@/context/settings.context";
 import { createCardArray } from "@/lib/game";
+import { LEVELS } from "@/lib/levels";
 import type { CardData } from "@/lib/types";
 import JSConfetti from "js-confetti";
-import { use, useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import useSound from "use-sound";
 
 export type GameState = "initial" | "displaying-cards" | "playing" | "win";
@@ -19,7 +24,8 @@ const confetti = new JSConfetti();
 
 const Play = () => {
   const { iconThemeId, soundVolume } = useSettings();
-  const level = use(CurrentLevelContext);
+  const level = useCurrentLevel();
+  const levelDispatch = useCurrentLevelDispatch();
   const scoresDispatch = useScoresDispatch();
 
   const cardCount = level.cardCount;
@@ -93,6 +99,26 @@ const Play = () => {
     score,
     scoresDispatch,
   ]);
+
+  const resetBoard = useCallback(() => {
+    const newCards = createCardArray(
+      iconThemeId,
+      false,
+      cardCount / 2,
+      powerCardCount,
+      true
+    );
+    setCards(newCards);
+    setScore(0);
+    setScoreChange(0);
+    setRevealAbilityCount(0);
+    setDisplaySeconds(0);
+  }, [cardCount, iconThemeId, powerCardCount]);
+
+   useLayoutEffect(() => {
+    resetBoard();
+    setGameState("initial");
+  }, [level.id, resetBoard]);
 
   const markMatched = (ids: number[], updatedCards: CardData[]) => {
     let matchScore = 0;
@@ -168,22 +194,28 @@ const Play = () => {
   };
 
   const startGame = () => {
-    const newCards = createCardArray(
-      iconThemeId,
-      false,
-      cardCount / 2,
-      powerCardCount,
-      true
-    );
-    setCards(newCards);
-    setScore(0);
+    resetBoard();
     revealCards(cardCount * 0.2);
-    setRevealAbilityCount(0);
   };
 
   const useRevealAbility = () => {
     revealCards(5);
     setRevealAbilityCount((prev) => prev - 1);
+  };
+
+  const handleNextLevelClick = () => {
+    const nextLevel = LEVELS.find((l) => l.id === level.id + 1);
+    if (nextLevel) {
+      setGameState("initial");
+      setTimeout(() => {
+        levelDispatch(nextLevel.id);
+      }, 200);
+    }
+  };
+
+  const handleReplayClick = () => {
+    setGameState("initial");
+    resetBoard();
   };
 
   return (
@@ -208,6 +240,13 @@ const Play = () => {
         revealAbilityCount={revealAbilityCount}
         onNewGameButtonClick={startGame}
         onRevealAllButtonClick={useRevealAbility}
+      />
+      <WinModal
+        isOpen={gameState === "win"}
+        levelId={level.id}
+        score={Math.floor(score)}
+        onNextLevelClick={handleNextLevelClick}
+        onReplayClick={handleReplayClick}
       />
     </div>
   );

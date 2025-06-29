@@ -1,4 +1,4 @@
-import { GamepadIcon, MedalIcon, PlaySquareIcon, SettingsIcon } from "lucide-react";
+import { MedalIcon, PlaySquareIcon, SettingsIcon } from "lucide-react";
 import { NavLink } from "react-router";
 
 export function BottomDock() {

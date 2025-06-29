@@ -1,4 +1,4 @@
-import { MedalIcon, PlayIcon, PlaySquareIcon, SettingsIcon } from "lucide-react";
+import { MedalIcon, PlaySquareIcon, SettingsIcon } from "lucide-react";
 import { Link, NavLink } from "react-router";
 
 export function TopNav() {
